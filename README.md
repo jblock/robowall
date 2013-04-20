@@ -2,8 +2,12 @@
 
 ## Instructions
 
-```npm install -g bower```
-```bower install```
+```
+npm install -g bower
+```
+```
+bower install
+```
 open `index.html`
 
 Authors:
