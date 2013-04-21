@@ -6,7 +6,8 @@ require.config({
 		jquery: 'components/jquery/jquery',
 		es5shim: 'components/es5-shim/es5-shim',
 		es5sham: 'components/es5-shim/es5-sham',
-		requireText: 'components/text/text'
+		requireText: 'components/text/text',
+		sylvester: 'com[onents/sylvester/sylvester'
 	},
 	map: {
 		'*': {

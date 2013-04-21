@@ -4,6 +4,7 @@
 	"dependencies": {
 		"flight": "~1.0.0",
 		"requirejs": "2.1.5",
-		"text": "git@github.com:requirejs/text.git"
+		"text": "git@github.com:requirejs/text.git",
+		"sylvester": "0.1.3"
 	}
 }
