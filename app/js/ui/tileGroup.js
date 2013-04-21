@@ -14,6 +14,11 @@ define(
 
 			this.TILE_TEMPLATE = utils.tmpl(tileTemplate);
 
+			this.worker = new Worker("/app/js/workers/sync.js");
+			this.worker.addEventListener('message', function(event) {
+				console.log("WORKER DATA: ",event.data);
+			});
+
 			this.defaultAttrs({
 				individualTile: '.tile'
 			});
@@ -35,6 +40,9 @@ define(
 			}
 
 			this.after('initialize', function() {
+
+				this.worker.postMessage("err");
+
 				this.on(document, 'drawTestData', this.renderAll);
 				this.on('click', {'individualTile': this.populateFeaturedTile});
 				var n = [];
