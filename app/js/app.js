@@ -9,7 +9,6 @@ define(
 	function(TileGroup, TwitterBlurb, FeaturedTile) {
 
 		var initialize = function() {
-			console.log('init');
 			TwitterBlurb.attachTo(document);
 			FeaturedTile.attachTo('#featuredTile');
 			TileGroup.attachTo('#tileContainer');

@@ -28,16 +28,55 @@ body {
 }
 
 #tileContainer {
-	background: red;
-	z-index: 10;
+    box-sizing: border-box;
+    padding-left: 40px;
+    width: 1080px;
+    height: 1920px;
+    overflow: hidden;
+    background-color: #000;
+    z-index: 10;
 }
 
 .tile {
-	width: 100px;
-	height: 100px;
-	background: green;
-	padding: 20px;
-	margin-right: 20px;
-	margin-bottom: 20px;
-	display: inline-block;
+    position: relative;
+    background-color: blue;
+    background: url(../chris.jpg);
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+.tile[data-size="1x1"] {
+    width: 245px;
+    height: 285px;
+    font-size: 12pt;
+}
+
+.tile[data-size="2x1"] {
+    width: 500px;
+    height: 285px;
+    font-size: 18pt;
+}
+
+.tile[data-size="2x2"] {
+    width: 500px;
+    height: 580px;
+    font-size: 24pt;
+}
+
+.tile[data-size="3x2"] {
+    width: 755px;
+    height: 580px;
+    font-size: 36pt;
+}
+
+.tile .title {
+    position: absolute;
+    box-sizing: border-box;
+    bottom: 0px;
+    height: 30%;
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+    color: #FFF;
+    padding: 3%;
+    overflow: hidden;
 }

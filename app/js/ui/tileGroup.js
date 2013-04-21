@@ -16,7 +16,7 @@ define(
 
 			this.worker = new Worker("/app/js/workers/sync.js");
 			this.worker.addEventListener('message', function(event) {
-				console.log("WORKER DATA: ",event.data);
+				console.log("WORKER DATA: ", event.data);
 			});
 
 			this.defaultAttrs({
@@ -29,6 +29,13 @@ define(
 				data.tiles.forEach(function(data) {
 					this.render(e, {tile: data});
 				}, this);
+				var container = document.querySelector('#tileContainer');
+				var pckry = new Packery( container, {
+				  // options
+				  itemSelector: '.tile',
+				  gutter: 10,
+				  columnWidth: 245
+				});
 			}
 
 			this.render = function(e, data) {

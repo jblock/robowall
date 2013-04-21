@@ -7,7 +7,7 @@ require.config({
 		es5shim: 'components/es5-shim/es5-shim',
 		es5sham: 'components/es5-shim/es5-sham',
 		text: 'components/text/text',
-		sylvester: 'components/sylvester/sylvester',
+		sylvester: 'components/sylvester/sylvester'
 	},
 	map: {
 		'*': {
@@ -27,10 +27,10 @@ require.config({
 require(
 	[
 		'app/js/app', 
-	  'components/flight/lib/compose',
-    'components/flight/lib/registry',
-    'components/flight/lib/advice',
-    'components/flight/lib/logger',
+		'components/flight/lib/compose',
+    	'components/flight/lib/registry',
+    	'components/flight/lib/advice',
+    	'components/flight/lib/logger',
 		'components/flight/tools/debug/debug'
 	], function(App, compose, registry, advice, withLogging, debug) {
 		debug.enable(true);
