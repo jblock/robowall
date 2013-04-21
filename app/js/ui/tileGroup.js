@@ -12,24 +12,28 @@ define(
 
 		function tileGroup() {
 
-			var TILE_TEMPLATE = utils.tmpl(tileTemplate);
+			this.TILE_TEMPLATE = utils.tmpl(tileTemplate);
 
 			this.renderAll = function(e, data) {
-				console.log('render all');
+				console.log('render all: ', data.tiles);
 				this.$node.html('');
-				data.tiles.forEach(function(curTile) {
-					this.render(e, {tile: curTile});
+				data.tiles.forEach(function(data) {
+					this.render(e, {tile: data});
 				}, this);
-			};
+			}
 
 			this.render = function(e, data) {
-				this.$node.append(TILE_TEMPLATE(data.tile));
+				this.$node.append(this.TILE_TEMPLATE(data.tile));
 			}
 
 			this.after('initialize', function() {
-				this.on(document, 'raw', this.renderAll);
-				this.on(document, 'uiMoveMail', this.requestSelectorWidget);
-				this.trigger(document, 'createdTile');
+				this.on(document, 'drawTestData', this.renderAll);
+				var n = [];
+				n.push({
+						title: "sauce"
+					});
+				n.push({title: "oranges"});
+				this.trigger(document, 'createdTile', {tiles: n});
 			});
 		}
 	}

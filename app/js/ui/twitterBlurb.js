@@ -8,29 +8,14 @@ define(
 
 		return defineComponent(twitterBlurb);
 
-		var testData = {
-			tiles: [
-				{
-					title: "boop"
-				},
-				{
-					title: "boop"
-				},
-				{
-					title: "boop"
-				},
-				{
-					title: "boop"
-				},
-			]
-		};
-
 		function twitterBlurb() {
+			this.peaches = function(e, data) {
+				console.log(data);
+				this.trigger(document, 'drawTestData', data);
+			}
+
 			this.after('initialize', function() {
-				this.on(document, 'createdTile', function() {
-					console.log("twitter");
-				});
-				this.trigger(document, 'raw', testData);
+				this.on(document, 'createdTile', this.peaches)
 			});
 		}
 	}
