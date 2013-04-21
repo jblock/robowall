@@ -15,7 +15,7 @@ body {
 	background: #ddd;
 }
 
-.threeContainer, .tileContainer {
+#threeContainer, #tileContainer {
 	position: absolute;
 	left: 0;
 	top: 0;
@@ -23,11 +23,11 @@ body {
 	height: 100%;
 }
 
-.threeContainer {
+#threeContainer {
 	z-index: 5;
 }
 
-.tileContainer {
+#tileContainer {
 	background: red;
 	z-index: 10;
 }
