@@ -14,6 +14,10 @@ define(
 
 			this.TILE_TEMPLATE = utils.tmpl(tileTemplate);
 
+			this.defaultAttrs({
+				individualTile: '.tile'
+			});
+
 			this.renderAll = function(e, data) {
 				console.log('render all: ', data.tiles);
 				this.$node.html('');
@@ -26,13 +30,20 @@ define(
 				this.$node.append(this.TILE_TEMPLATE(data.tile));
 			}
 
+			this.populateFeaturedTile = function(e, data) {
+				this.trigger(document, 'showFeaturedTile');
+			}
+
 			this.after('initialize', function() {
 				this.on(document, 'drawTestData', this.renderAll);
+				this.on('click', {'individualTile': this.populateFeaturedTile});
 				var n = [];
+				for (var i = 0; i < 15; i++) {
+				var p = ""+Math.floor(Math.random()*5000);
 				n.push({
-						title: "sauce"
+						title: p
 					});
-				n.push({title: "oranges"});
+				}
 				this.trigger(document, 'createdTile', {tiles: n});
 			});
 		}
