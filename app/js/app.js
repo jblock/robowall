@@ -10,7 +10,7 @@ define(
 
 		var initialize = function() {
 			TwitterBlurb.attachTo(document);
-			FeaturedTile.attachTo('#featuredTile');
+			FeaturedTile.attachTo('#featuredTileContainer');
 			TileGroup.attachTo('#tileContainer');
 		}
 
