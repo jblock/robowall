@@ -31,11 +31,17 @@ div {
 
 #tileContainer {
     box-sizing: border-box;
+    -webkit-transform: perspective(600) translateZ(0px);
+    -webkit-transition: all 0.3s ease-out;
     margin: 350px 20px 0px 20px;
     width: 1040px;
     height: 875px;
     overflow: hidden;
     z-index: 10;
+}
+
+#tileContainer.featuredTileFocus {
+    -webkit-transform: perspective(600) translateZ(-140px);
 }
 
 .tile {

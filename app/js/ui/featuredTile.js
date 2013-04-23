@@ -22,6 +22,7 @@ define(
 
 			this.hideTile = function(e, data) {
 				this.$node.toggle();
+				this.trigger(document, 'hideFeaturedTile');
 			}
 
 			this.after('initialize', function() {

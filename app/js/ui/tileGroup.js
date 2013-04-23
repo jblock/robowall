@@ -78,13 +78,19 @@ define(
 			}
 
 			this.populateFeaturedTile = function(e, data) {
+				this.$node.toggleClass('featuredTileFocus');
 				this.trigger(document, 'showFeaturedTile');
+			}
+
+			this.tileGroupFocus = function(e, data) {
+				this.$node.toggleClass('featuredTileFocus');
 			}
 
 			this.after('initialize', function() {
 				var self = this;
 				this.on('click', {'individualTile': this.populateFeaturedTile});
 				this.on(document, 'dataFetched', this.renderAll);
+				this.on(document, 'hideFeaturedTile', this.tileGroupFocus);
 
 				this.worker.addEventListener('message', function(event) {
 					self.trigger(document, 'dataFetched', event.data);
