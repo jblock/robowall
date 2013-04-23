@@ -14,7 +14,7 @@ div {
 #page {
     width: 1080px;
     height: 1920px;
-    background: -webkit-linear-gradient(top, #000000 0%,#353535 30%,#353535 70%,#000000 100%);
+    background: -webkit-linear-gradient(top, #000000 0%,#565152 40%,#565152 60%,#000000 100%);
 }
 
 #threeContainer, #tileContainer {
@@ -41,8 +41,8 @@ div {
 .tile {
     position: relative;
     background-color: blue;
-    -webkit-box-shadow:  0px 0px 5px 3px rgba(0, 0, 0, .4);
-    box-shadow:  0px 0px 5px 3px rgba(0, 0, 0, .4);
+    -webkit-box-shadow:  0px 0px 5px 3px rgba(0, 0, 0, .2);
+    box-shadow:  0px 0px 5px 3px rgba(0, 0, 0, .2);
 }
 
 .tile[data-size="1x1"] {
@@ -54,30 +54,30 @@ div {
 .tile[data-size="2x1"] {
     width: 510px;
     height: 285px;
-    font-size: 18pt;
+    font-size: 12pt;
 }
 
 .tile[data-size="2x2"] {
     width: 510px;
     height: 590px;
-    font-size: 24pt;
+    font-size: 12pt;
 }
 
 .tile[data-size="3x2"] {
     width: 775px;
     height: 590px;
-    font-size: 36pt;
+    font-size: 12pt;
 }
 
 .tile .title {
     position: absolute;
     box-sizing: border-box;
     bottom: 0px;
-    height: 25%;
+    height: 70px;
     width: 100%;
     background-color: rgba(0, 0, 0, 0.6);
     color: #FFF;
-    padding: 3%;
+    padding: 15px;
     overflow: hidden;
 }
 

@@ -22,8 +22,10 @@ define(
 				// Create a default layout recipe
 				var layouts = [{ '1x1': 4, '2x1': 1, '2x2': 1, '3x2': 1 },
 							   { '1x1': 6, '2x1': 3, '2x2': 1, '3x2': 0 },
-							   { '1x1': 4, '2x1': 2, '2x2': 2, '3x2': 0 }];
-				var rand = Math.floor(Math.random()*3);
+							   { '1x1': 4, '2x1': 2, '2x2': 2, '3x2': 0 },
+							   { '1x1': 4, '2x1': 0, '2x2': 0, '3x2': 2 },
+							   { '1x1': 2, '2x1': 2, '2x2': 1, '3x2': 1 }];
+				var rand = Math.floor(Math.random()*layouts.length);
 
 				this.$node.html('');
 				// Todo: sort the articles by routine & popularity
