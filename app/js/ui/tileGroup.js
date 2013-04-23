@@ -18,39 +18,36 @@ define(
 				individualTile: '.tile'
 			});
 
-			this.renderAll = function(e, data) {
-				// Create a default layout recipe
-				var layouts = [{ '1x1': 4, '2x1': 1, '2x2': 1, '3x2': 1 },
-							   { '1x1': 6, '2x1': 3, '2x2': 1, '3x2': 0 },
-							   { '1x1': 4, '2x1': 2, '2x2': 2, '3x2': 0 },
-							   { '1x1': 4, '2x1': 0, '2x2': 0, '3x2': 2 },
-							   { '1x1': 2, '2x1': 2, '2x2': 1, '3x2': 1 }];
-				var rand = Math.floor(Math.random()*layouts.length);
+			// Create a set of arrangements to pick from.
+			var LAYOUTS = [
+					{ '1x1': 4, '2x1': 1, '2x2': 1, '3x2': 1 },
+					{ '1x1': 6, '2x1': 3, '2x2': 1, '3x2': 0 },
+					{ '1x1': 4, '2x1': 3, '2x2': 0, '3x2': 1 },
+					{ '1x1': 4, '2x1': 0, '2x2': 0, '3x2': 2 },
+					{ '1x1': 2, '2x1': 2, '2x2': 1, '3x2': 1 }
+				];
 
-				this.$node.html('');
-				// Todo: sort the articles by routine & popularity
-				var preload =  new Image();
-				data.articles.forEach(function(article) {
-					// Cache image
-					preload.src = article.media[0];
-					if (layouts[rand]['3x2'] > 0) {
-						article.size = '3x2';
-						layouts[rand]['3x2'] --;
-						this.render(e, {tile: article});
-					} else if (layouts[rand]['2x2'] > 0) {
-						article.size = '2x2';
-						layouts[rand]['2x2'] --;
-						this.render(e, {tile: article});
-					} else if (layouts[rand]['2x1'] > 0) {
-						article.size = '2x1';
-						layouts[rand]['2x1'] --;
-						this.render(e, {tile: article});
-					} else if (layouts[rand]['1x1'] > 0) {
-						article.size = '1x1';
-						layouts[rand]['1x1'] --;
-						this.render(e, {tile: article});
-					}
-				}, this);
+			this.layout = LAYOUTS[Math.floor(Math.random()*LAYOUTS.length)];
+
+			this.renderAll = function(e, data) {
+				var _this = this;
+
+				// Sort articles by popularity in descending order.
+				this.articles = _.sortBy(data.articles, "popularity").reverse();
+				
+				// Pair the most popular articles with the largest block sizes
+				var pairs = _.zip(this.articles, this._blockSizes().reverse());
+				var tiles = _.compact(_.map(pairs, function(pair){
+					var article = pair[0], size = pair[1];
+					article.size = size;
+					if (article.size != undefined) return article;
+				}));
+			
+			 	// tiles = _.shuffle(tiles);
+
+				_.map(tiles, function(tile){ 
+					_this.render(e, {tile: tile}); 
+				});
 
 				// Compute the optimal arrangement
 				var container = document.querySelector('#tileContainer');
@@ -84,6 +81,19 @@ define(
 			});
 
 			this.worker = new Worker("/app/js/workers/sync.js");
+
+			// Turns layout{keyA: 2, keyB: 3} -> [keyA, keyA, keyB, keyB, keyB]
+			this._blockSizes = function(){
+				var expanded =  _.map(this.layout, function(count, size){
+					var blocks_my_size = [ ]
+					while (count > 0){ 
+						blocks_my_size.push(size); 
+						count--;
+					}
+					return blocks_my_size;
+				});
+				return _.compact(_.flatten(expanded));
+			}
 		}
 	}
 );
