@@ -7,7 +7,8 @@ require.config({
 		es5shim: 'components/es5-shim/es5-shim',
 		es5sham: 'components/es5-shim/es5-sham',
 		text: 'components/text/text',
-		sylvester: 'components/sylvester/sylvester'
+		sylvester: 'components/sylvester/sylvester',
+		underscore: 'components/underscore/underscore'
 	},
 	map: {
 		'*': {
@@ -16,7 +17,7 @@ require.config({
 	},
 	shim: {
 		'components/flight/lib/index': {
-			deps: ['jquery', 'es5shim', 'es5sham']
+			deps: ['jquery', 'es5shim', 'es5sham', 'underscore']
 		},
 		'app/js/app': {
 			deps: ['components/flight/lib/index']

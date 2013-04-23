@@ -18,39 +18,49 @@ define(
 				individualTile: '.tile'
 			});
 
-			this.renderAll = function(e, data) {
-				// Create a default layout recipe
-				var layouts = [{ '1x1': 4, '2x1': 1, '2x2': 1, '3x2': 1 },
-							   { '1x1': 6, '2x1': 3, '2x2': 1, '3x2': 0 },
-							   { '1x1': 4, '2x1': 2, '2x2': 2, '3x2': 0 },
-							   { '1x1': 4, '2x1': 0, '2x2': 0, '3x2': 2 },
-							   { '1x1': 2, '2x1': 2, '2x2': 1, '3x2': 1 }];
-				var rand = Math.floor(Math.random()*layouts.length);
+			// Create a set of arrangements to pick from.
+			// layout.map maps the position in the final layout to article rank.
+			var LAYOUTS = [
+				{ sizes: [ '3x2', '2x2', '2x1', '1x1', '1x1', '1x1', '1x1'],
+					map: [6, 0, 1, 2, 3, 4, 5] },
+				{ sizes: [ '3x2', '2x2', '2x2', '1x1', '1x1'],
+					map: [0, 1, 2, 3, 4] },
+				{ sizes: [ '2x2', '2x1', '2x1', '2x1', '2x1', '1x1', '1x1', '1x1', '1x1'],
+					map: [1, 2, 3, 0, 6, 4, 5, 7, 8] },
+				{ sizes: [ '3x2', '2x2', '2x1', '1x1', '1x1', '1x1', '1x1'],
+					map: [0, 6, 1, 5, 3, 4, 2] },
+				{ sizes: [ '3x2', '2x1', '2x1', '2x1', '2x1', '1x1', '1x1'],
+					map: [2, 1, 3, 0, 4, 5, 6] 
+				},
+			];
 
+			this.layout = LAYOUTS[Math.floor(Math.random()*LAYOUTS.length)];
+
+			this.renderAll = function(e, data) {
+				var _this = this;
+				var articles = [];
+				var tiles = [];
+
+				// Sort articles by popularity in descending order.
+				this.articles = _.sortBy(data.articles, "popularity").reverse();
+				var num_shown = this.layout.sizes.length;
+
+				// Link articles to a size.
+				for(var i=0; i<num_shown; i++){
+					var article = this.articles[i];
+					article.size = this.layout.sizes[i];
+					articles.push(article);
+					tiles.push(null);
+				}
+
+				// Order the articles.
+				for(var i=0; i<num_shown; i++){
+					tiles[i] = articles[this.layout.map[i]];
+				}
+
+				// Render every tile.
 				this.$node.html('');
-				// Todo: sort the articles by routine & popularity
-				var preload =  new Image();
-				data.articles.forEach(function(article) {
-					// Cache image
-					preload.src = article.media[0];
-					if (layouts[rand]['3x2'] > 0) {
-						article.size = '3x2';
-						layouts[rand]['3x2'] --;
-						this.render(e, {tile: article});
-					} else if (layouts[rand]['2x2'] > 0) {
-						article.size = '2x2';
-						layouts[rand]['2x2'] --;
-						this.render(e, {tile: article});
-					} else if (layouts[rand]['2x1'] > 0) {
-						article.size = '2x1';
-						layouts[rand]['2x1'] --;
-						this.render(e, {tile: article});
-					} else if (layouts[rand]['1x1'] > 0) {
-						article.size = '1x1';
-						layouts[rand]['1x1'] --;
-						this.render(e, {tile: article});
-					}
-				}, this);
+				_.map(tiles, function(tile){ _this.render(e, {tile: tile}); });
 
 				// Compute the optimal arrangement
 				var container = document.querySelector('#tileContainer');
