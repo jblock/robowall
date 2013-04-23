@@ -35,10 +35,20 @@ define(
 			];
 
 			this.layout = LAYOUTS[Math.floor(Math.random()*LAYOUTS.length)];
+			var articles = [];
+
+			this.getArticle = function(articleID) {
+				var returnedArticle = {};
+				articles.forEach(function(article) {
+					if (article.id == parseInt(articleID)) {
+						returnedArticle = article;
+					}
+				});
+				return returnedArticle;
+			}
 
 			this.renderAll = function(e, data) {
 				var _this = this;
-				var articles = [];
 				var tiles = [];
 
 				// Sort articles by popularity in descending order.
@@ -78,6 +88,18 @@ define(
 			}
 
 			this.populateFeaturedTile = function(e, data) {
+				var self = this;
+				var requestedArticle = this.getArticle(data.el.dataset.id);
+				$(this.$node.siblings('.featuredTileContainer')[0]).find('.description h1')[0].innerHTML = requestedArticle.title;
+				$(this.$node.siblings('.featuredTileContainer')[0]).find('.description p')[0].innerHTML = requestedArticle.content;
+				$(this.$node.siblings('.featuredTileContainer')[0]).find('.media')[0].innerHTML = "";
+
+				requestedArticle.media.forEach(function(imageSrc) {
+					var img = $('<img>');
+					img.attr('src', imageSrc);
+					img.appendTo($(self.$node.siblings('.featuredTileContainer')[0]).find('.media')[0]);
+				});
+
 				this.$node.toggleClass('featuredTileFocus');
 				this.trigger(this.$node.siblings('.featuredTileContainer')[0], 'showFeaturedTile');
 			}

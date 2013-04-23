@@ -17,6 +17,7 @@ div {
     height: 1920px;
     background: -webkit-linear-gradient(top, #000000 0%,#565152 40%,#565152 60%,#000000 100%);
     float: left;
+    margin-right: 10px;
 }
 
 .threeContainer, .tileContainer {
@@ -96,7 +97,7 @@ div {
     height: 1920px;
     top: 0px;
     left: 0px;
-    background: rgba(0, 0, 0, 0.7);
+    background: rgba(0, 0, 0, 0.5);
     display: none;
 }
 
@@ -104,6 +105,49 @@ div {
     width: 950px;
     height: 1400px;
     margin: 238px auto 0px auto;
-    background: #fff;
+    padding-top: 70px;
     -webkit-animation-duration: .5s;
+}
+
+.featuredTile .mediaContainer {
+    width: 1080px;
+    height: 800px;
+    margin-left: -67px;
+    overflow-x: scroll;
+    overflow-y: hidden;
+}
+
+.featuredTile .mediaContainer .media {
+    width: auto;
+    height: 100%;
+    text-align: center;
+    float: left;
+    white-space: nowrap;
+}
+
+.featuredTile .mediaContainer .media img {
+    height: 800px;
+    width: auto;
+    float: left;
+}
+
+.featuredTile .description {
+    box-sizing: border-box;
+    width: 100%;
+    height: auto;
+    max-height: 440px;
+    margin-top: 82px;
+    padding: 20px 60px 20px 60px;
+    background: #000;
+    color: #fff;
+    border: 1px solid #fff;
+    overflow-y: scroll;
+}
+
+.featuredTile .description h1 {
+    font-size: 36pt;
+}
+
+.featuredTile .description p {
+    font-size: 18pt;
 }
