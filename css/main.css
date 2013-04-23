@@ -11,13 +11,15 @@ div {
 	box-sizing: border-box;
 }
 
-#page {
+#screen1, #screen2, #screen3 {
+    position: relative;
     width: 1080px;
     height: 1920px;
     background: -webkit-linear-gradient(top, #000000 0%,#565152 40%,#565152 60%,#000000 100%);
+    float: left;
 }
 
-#threeContainer, #tileContainer {
+.threeContainer, .tileContainer {
 	position: absolute;
 	left: 0;
 	top: 0;
@@ -25,11 +27,11 @@ div {
 	height: 100%;
 }
 
-#threeContainer {
+.threeContainer {
 	z-index: 5;
 }
 
-#tileContainer {
+.tileContainer {
     box-sizing: border-box;
     -webkit-transform: perspective(600) translateZ(0px);
     -webkit-transition: all 0.3s ease-out;
@@ -87,7 +89,7 @@ div {
     overflow: hidden;
 }
 
-#featuredTileContainer {
+.featuredTileContainer {
     position: absolute;
     z-index: 20;
     width: 1080px;

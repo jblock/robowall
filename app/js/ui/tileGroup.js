@@ -63,7 +63,7 @@ define(
 				_.map(tiles, function(tile){ _this.render(e, {tile: tile}); });
 
 				// Compute the optimal arrangement
-				var container = document.querySelector('#tileContainer');
+				var container = this.$node[0];
 				var pckry = new Packery( container, {
 				  // options
 				  itemSelector: '.tile',
@@ -79,7 +79,7 @@ define(
 
 			this.populateFeaturedTile = function(e, data) {
 				this.$node.toggleClass('featuredTileFocus');
-				this.trigger(document, 'showFeaturedTile');
+				this.trigger(this.$node.siblings('.featuredTileContainer')[0], 'showFeaturedTile');
 			}
 
 			this.tileGroupFocus = function(e, data) {
