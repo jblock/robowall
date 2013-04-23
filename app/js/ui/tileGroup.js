@@ -100,12 +100,12 @@ define(
 					img.appendTo($(self.$node.siblings('.featuredTileContainer')[0]).find('.media')[0]);
 				});
 
-				this.$node.toggleClass('featuredTileFocus');
+				this.$node.addClass('featuredTileFocus');
 				this.trigger(this.$node.siblings('.featuredTileContainer')[0], 'showFeaturedTile');
 			}
 
 			this.tileGroupFocus = function(e, data) {
-				this.$node.toggleClass('featuredTileFocus');
+				this.$node.removeClass('featuredTileFocus');
 			}
 
 			this.after('initialize', function() {

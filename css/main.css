@@ -43,7 +43,7 @@ div {
     z-index: 10;
 }
 
-#tileContainer.featuredTileFocus {
+.tileContainer.featuredTileFocus {
     -webkit-transform: perspective(600) translateZ(-140px);
 }
 
