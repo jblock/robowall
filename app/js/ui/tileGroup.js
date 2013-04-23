@@ -27,7 +27,10 @@ define(
 
 				this.$node.html('');
 				// Todo: sort the articles by routine & popularity
+				var preload =  new Image();
 				data.articles.forEach(function(article) {
+					// Cache image
+					preload.src = article.media[0];
 					if (layouts[rand]['3x2'] > 0) {
 						article.size = '3x2';
 						layouts[rand]['3x2'] --;
