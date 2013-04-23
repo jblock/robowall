@@ -19,35 +19,47 @@ define(
 			});
 
 			// Create a set of arrangements to pick from.
+			// layout.map maps the position in the final layout to article rank.
 			var LAYOUTS = [
-					{ '1x1': 4, '2x1': 1, '2x2': 1, '3x2': 1 },
-					{ '1x1': 6, '2x1': 3, '2x2': 1, '3x2': 0 },
-					{ '1x1': 4, '2x1': 3, '2x2': 0, '3x2': 1 },
-					{ '1x1': 4, '2x1': 0, '2x2': 0, '3x2': 2 },
-					{ '1x1': 2, '2x1': 2, '2x2': 1, '3x2': 1 }
-				];
+				{ sizes: [ '3x2', '2x2', '2x1', '1x1', '1x1', '1x1', '1x1'],
+					map: [6, 0, 1, 2, 3, 4, 5] },
+				{ sizes: [ '3x2', '2x2', '2x2', '1x1', '1x1'],
+					map: [0, 1, 2, 3, 4] },
+				{ sizes: [ '2x2', '2x1', '2x1', '2x1', '2x1', '1x1', '1x1', '1x1', '1x1'],
+					map: [1, 2, 3, 0, 6, 4, 5, 7, 8] },
+				{ sizes: [ '3x2', '2x2', '2x1', '1x1', '1x1', '1x1', '1x1'],
+					map: [0, 6, 1, 5, 3, 4, 2] },
+				{ sizes: [ '3x2', '2x1', '2x1', '2x1', '2x1', '1x1', '1x1'],
+					map: [2, 1, 3, 0, 4, 5, 6] 
+				},
+			];
 
 			this.layout = LAYOUTS[Math.floor(Math.random()*LAYOUTS.length)];
 
 			this.renderAll = function(e, data) {
 				var _this = this;
+				var articles = [];
+				var tiles = [];
 
 				// Sort articles by popularity in descending order.
 				this.articles = _.sortBy(data.articles, "popularity").reverse();
-				
-				// Pair the most popular articles with the largest block sizes
-				var pairs = _.zip(this.articles, this._blockSizes().reverse());
-				var tiles = _.compact(_.map(pairs, function(pair){
-					var article = pair[0], size = pair[1];
-					article.size = size;
-					if (article.size != undefined) return article;
-				}));
-			
-			 	// tiles = _.shuffle(tiles);
+				var num_shown = this.layout.sizes.length;
 
-				_.map(tiles, function(tile){ 
-					_this.render(e, {tile: tile}); 
-				});
+				// Link articles to a size.
+				for(var i=0; i<num_shown; i++){
+					var article = this.articles[i];
+					article.size = this.layout.sizes[i];
+					articles.push(article);
+					tiles.push(null);
+				}
+
+				// Order the articles.
+				for(var i=0; i<num_shown; i++){
+					tiles[i] = articles[this.layout.map[i]];
+				}
+
+				// Render every tile.
+				_.map(tiles, function(tile){ _this.render(e, {tile: tile}); });
 
 				// Compute the optimal arrangement
 				var container = document.querySelector('#tileContainer');
@@ -81,19 +93,6 @@ define(
 			});
 
 			this.worker = new Worker("/app/js/workers/sync.js");
-
-			// Turns layout{keyA: 2, keyB: 3} -> [keyA, keyA, keyB, keyB, keyB]
-			this._blockSizes = function(){
-				var expanded =  _.map(this.layout, function(count, size){
-					var blocks_my_size = [ ]
-					while (count > 0){ 
-						blocks_my_size.push(size); 
-						count--;
-					}
-					return blocks_my_size;
-				});
-				return _.compact(_.flatten(expanded));
-			}
 		}
 	}
 );
