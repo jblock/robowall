@@ -59,6 +59,7 @@ define(
 				}
 
 				// Render every tile.
+				this.$node.html('');
 				_.map(tiles, function(tile){ _this.render(e, {tile: tile}); });
 
 				// Compute the optimal arrangement
