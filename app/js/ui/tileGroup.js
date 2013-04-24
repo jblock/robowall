@@ -36,7 +36,7 @@ define(
 				},
 			];
 
-			this.layout = LAYOUTS[Math.floor(Math.random()*LAYOUTS.length)];
+			this.layout = null;
 
 			this.getArticle = function(articleID) {
 				var returnedArticle = {};
@@ -52,11 +52,14 @@ define(
 				var _this = this;
 				var tiles = [];
 
-				// Sort articles by popularity in descending order.
+				// Choose layout
+				this.layout = LAYOUTS[Math.floor(Math.random()*LAYOUTS.length)];
+
+				// Sort articles by popularity in descending order
 				this.articles = data.articles;
 				var num_shown = this.layout.sizes.length;
 
-				// Link articles to a size.
+				// Link articles to a size
 				for(var i=0; i<num_shown; i++){
 					var article = this.articles[i];
 					article.size = this.layout.sizes[i];
@@ -64,12 +67,12 @@ define(
 					tiles.push(null);
 				}
 
-				// Order the articles.
+				// Order the articles
 				for(var i=0; i<num_shown; i++){
 					tiles[i] = this.articles[this.layout.map[i]];
 				}
 
-				// Render every tile.
+				// Render every tile
 				this.$node.html('');
 				_.map(tiles, function(tile){ _this.render(e, {tile: tile}); });
 
