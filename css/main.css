@@ -18,6 +18,7 @@ div {
     background: -webkit-linear-gradient(top, #000000 0%,#565152 40%,#565152 60%,#000000 100%);
     float: left;
     margin-right: 10px;
+    overflow: hidden;
 }
 
 .threeContainer, .tileContainer {
@@ -35,7 +36,7 @@ div {
 .tileContainer {
     box-sizing: border-box;
     -webkit-transform: perspective(600) translateZ(0px);
-    -webkit-transition: all 0.3s ease-out;
+    -webkit-transition: all 0.5s ease-in-out;
     margin: 350px 20px 0px 20px;
     width: 1040px;
     height: 875px;
@@ -127,6 +128,7 @@ div {
 
 .featuredTile .mediaContainer .media img {
     height: 800px;
+    margin-right: 20px;
     width: auto;
     float: left;
 }

@@ -2,13 +2,15 @@
 
 define(
 	[
+		'./ui/controller',
 		'./ui/tileGroup',
 		'./ui/twitterBlurb',
 		'./ui/featuredTile'
 	],
-	function(TileGroup, TwitterBlurb, FeaturedTile) {
+	function(Controller, TileGroup, TwitterBlurb, FeaturedTile) {
 
 		var initialize = function() {
+			Controller.attachTo(document);
 			TwitterBlurb.attachTo(document);
 			FeaturedTile.attachTo('#screen1 .featuredTileContainer');
 			TileGroup.attachTo('#screen1 .tileContainer');

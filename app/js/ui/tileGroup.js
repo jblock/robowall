@@ -18,6 +18,8 @@ define(
 				individualTile: '.tile'
 			});
 
+			this.articles = [];
+
 			// Create a set of arrangements to pick from.
 			// layout.map maps the position in the final layout to article rank.
 			var LAYOUTS = [
@@ -35,11 +37,10 @@ define(
 			];
 
 			this.layout = LAYOUTS[Math.floor(Math.random()*LAYOUTS.length)];
-			var articles = [];
 
 			this.getArticle = function(articleID) {
 				var returnedArticle = {};
-				articles.forEach(function(article) {
+				this.articles.forEach(function(article) {
 					if (article.id == parseInt(articleID)) {
 						returnedArticle = article;
 					}
@@ -52,20 +53,20 @@ define(
 				var tiles = [];
 
 				// Sort articles by popularity in descending order.
-				this.articles = _.sortBy(data.articles, "popularity").reverse();
+				this.articles = data.articles;
 				var num_shown = this.layout.sizes.length;
 
 				// Link articles to a size.
 				for(var i=0; i<num_shown; i++){
 					var article = this.articles[i];
 					article.size = this.layout.sizes[i];
-					articles.push(article);
+					this.articles.push(article);
 					tiles.push(null);
 				}
 
 				// Order the articles.
 				for(var i=0; i<num_shown; i++){
-					tiles[i] = articles[this.layout.map[i]];
+					tiles[i] = this.articles[this.layout.map[i]];
 				}
 
 				// Render every tile.
@@ -111,17 +112,9 @@ define(
 			this.after('initialize', function() {
 				var self = this;
 				this.on('click', {'individualTile': this.populateFeaturedTile});
-				this.on(document, 'dataFetched', this.renderAll);
+				this.on('renderTiles', this.renderAll);
 				this.on(document, 'hideFeaturedTile', this.tileGroupFocus);
-
-				this.worker.addEventListener('message', function(event) {
-					self.trigger(document, 'dataFetched', event.data);
-				});
-
-				this.worker.postMessage("sync");
 			});
-
-			this.worker = new Worker("/app/js/workers/sync.js");
 		}
 	}
 );
