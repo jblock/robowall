@@ -12,11 +12,11 @@ define(
 		function featuredTile() {
 
 			this.showTile = function(e, data) {
-				this.$node.toggle();
+				this.$node.show();
 			}
 
 			this.hideTile = function(e, data) {
-				this.$node.toggle();
+				this.$node.hide();
 				this.trigger(document, 'hideFeaturedTile');
 			}
 
