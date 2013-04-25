@@ -32,16 +32,30 @@ define(
 			}
 
 			this.nextRoutine = function(e, data) {
+				var self = this;
 				if (this.currentRoutine < (this.routines.length-1)) {
 					this.currentRoutine += 1;
 				} else {
 					this.currentRoutine = 0;
 				}
 
-				this.trigger($('#screen1 .tileContainer'), 'renderTiles', { articles: this.routines[this.currentRoutine].slice(0,9) });
-				this.trigger($('#screen2 .tileContainer'), 'renderTiles', { articles: this.routines[this.currentRoutine].slice(9,18) });
-				this.trigger($('#screen3 .tileContainer'), 'renderTiles', { articles: this.routines[this.currentRoutine].slice(18,27) });
-			
+				// Trigger transition out
+				this.trigger($('#screen1 .tileContainer'), 'buildOut');
+				this.trigger($('#screen2 .tileContainer'), 'buildOut');
+				this.trigger($('#screen3 .tileContainer'), 'buildOut');
+
+				// Draw tiles
+				setTimeout(function() {
+					self.trigger($('#screen1 .tileContainer'), 'renderTiles', { articles: self.routines[self.currentRoutine].slice(0,9) });
+					self.trigger($('#screen2 .tileContainer'), 'renderTiles', { articles: self.routines[self.currentRoutine].slice(9,18) });
+					self.trigger($('#screen3 .tileContainer'), 'renderTiles', { articles: self.routines[self.currentRoutine].slice(18,27) });
+				}, 1000);
+
+				// Trigger transition in
+				this.trigger($('#screen1 .tileContainer'), 'buildIn');
+				this.trigger($('#screen2 .tileContainer'), 'buildIn');
+				this.trigger($('#screen3 .tileContainer'), 'buildIn');
+
 				// Swap routines in 3 minutes
 				$('.featuredTileContainer').hide()
 				setTimeout("$(document).trigger('nextRoutine')", 180000);

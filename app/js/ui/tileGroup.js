@@ -18,8 +18,6 @@ define(
 				individualTile: '.tile'
 			});
 
-			this.articles = [];
-
 			// Create a set of arrangements to pick from.
 			// layout.map maps the position in the final layout to article rank.
 			var LAYOUTS = [
@@ -35,8 +33,6 @@ define(
 					map: [2, 1, 3, 0, 4, 5, 6] 
 				},
 			];
-
-			this.layout = null;
 
 			this.getArticle = function(articleID) {
 				var returnedArticle = {};
@@ -74,6 +70,7 @@ define(
 
 				// Render every tile
 				this.$node.html('');
+
 				_.map(tiles, function(tile){ _this.render(e, {tile: tile}); });
 
 				// Compute the optimal arrangement
@@ -112,11 +109,25 @@ define(
 				this.$node.removeClass('featuredTileFocus');
 			}
 
+			this.buildOut = function(e, data) {
+				this.$node.addClass('slowAnimation');
+				this.$node.addClass('flyOut');
+			}
+
+			this.buildIn = function(e, data) {
+				setTimeout('$(".tileContainer").removeClass("flyOut"); ', 1500);
+				setTimeout('$(".tileContainer").removeClass("slowAnimation"); ', 2000);
+			}
+
 			this.after('initialize', function() {
 				var self = this;
 				this.on('click', {'individualTile': this.populateFeaturedTile});
+				this.on('buildIn', this.buildIn);
+				this.on('buildOut', this.buildOut);
 				this.on('renderTiles', this.renderAll);
 				this.on(document, 'hideFeaturedTile', this.tileGroupFocus);
+				this.articles = [];
+				this.layout = null;
 			});
 		}
 	}
