@@ -15,9 +15,8 @@ div {
     position: relative;
     width: 1080px;
     height: 1920px;
-    background: -webkit-linear-gradient(top, #000000 0%,#565152 40%,#565152 60%,#000000 100%);
+    background: -webkit-linear-gradient(top, #000000 0%,#565152 20%,#565152 60%,#000000 100%);
     float: left;
-    margin-right: 10px;
     overflow: hidden;
 }
 
@@ -38,7 +37,7 @@ div {
     -webkit-transform: perspective(600) translateZ(0px);
     -webkit-transition: all ease-in-out;
     -webkit-transition-duration: 0.4s;
-    margin: 350px 20px 0px 20px;
+    margin: 300px 20px 0px 20px;
     width: 1040px;
     height: 875px;
     z-index: 10;
@@ -57,34 +56,34 @@ div {
 }
 
 #screen2 .tileContainer.flyOut {
-    -webkit-transform: translateY(1600px) translateZ(0);
+    -webkit-transform: translateY(1800px) translateZ(0);
 }
 
 .tile {
     position: relative;
     background-color: blue;
-    -webkit-box-shadow:  0px 0px 5px 3px rgba(0, 0, 0, .2);
+    -webkit-box-shadow: 0px 0px 7px 5px rgba(0, 0, 0, .3);
     font-size: 14pt;
 }
 
 .tile[data-size="1x1"] {
-    width: 245px;
+    width: 235px;
     height: 285px;
 }
 
 .tile[data-size="2x1"] {
-    width: 510px;
+    width: 500px;
     height: 285px;
 }
 
 .tile[data-size="2x2"] {
-    width: 510px;
-    height: 590px;
+    width: 500px;
+    height: 600px;
 }
 
 .tile[data-size="3x2"] {
-    width: 775px;
-    height: 590px;
+    width: 765px;
+    height: 600px;
 }
 
 .tile .title {
@@ -105,6 +104,7 @@ div {
     width: 100%;
     height: 70px;
     overflow: hidden;
+    text-shadow: 2px 2px 0px rgba(0, 0, 0, 1);
 }
 
 .featuredTileContainer {
@@ -185,9 +185,9 @@ div {
     position: absolute;
     width: auto;
     height: auto;
-    bottom: 73px;
+    bottom: 83px;
     left: 368px;
-    opacity: .2;
+    opacity: .15;
 }
 
 #logos .HCII {

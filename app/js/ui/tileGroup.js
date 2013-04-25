@@ -73,13 +73,13 @@ define(
 
 				_.map(tiles, function(tile){ _this.render(e, {tile: tile}); });
 
-				// Compute the optimal arrangement
+				// Run Packery
 				var container = this.$node[0];
 				var pckry = new Packery( container, {
 				  // options
 				  itemSelector: '.tile',
-				  gutter: 20,
-				  columnWidth: 245,
+				  gutter: 30,
+				  columnWidth: 235,
 				  containerStyle: null
 				});
 			}
