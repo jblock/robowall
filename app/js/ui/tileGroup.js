@@ -34,41 +34,52 @@ define(
 				},
 			];
 
-			this.layout = LAYOUTS[Math.floor(Math.random()*LAYOUTS.length)];
+			this.getArticle = function(articleID) {
+				var returnedArticle = {};
+				this.articles.forEach(function(article) {
+					if (article.id == parseInt(articleID)) {
+						returnedArticle = article;
+					}
+				});
+				return returnedArticle;
+			}
 
 			this.renderAll = function(e, data) {
 				var _this = this;
-				var articles = [];
 				var tiles = [];
 
-				// Sort articles by popularity in descending order.
-				this.articles = _.sortBy(data.articles, "popularity").reverse();
+				// Choose layout
+				this.layout = LAYOUTS[Math.floor(Math.random()*LAYOUTS.length)];
+
+				// Sort articles by popularity in descending order
+				this.articles = data.articles;
 				var num_shown = this.layout.sizes.length;
 
-				// Link articles to a size.
+				// Link articles to a size
 				for(var i=0; i<num_shown; i++){
 					var article = this.articles[i];
 					article.size = this.layout.sizes[i];
-					articles.push(article);
+					this.articles.push(article);
 					tiles.push(null);
 				}
 
-				// Order the articles.
+				// Order the articles
 				for(var i=0; i<num_shown; i++){
-					tiles[i] = articles[this.layout.map[i]];
+					tiles[i] = this.articles[this.layout.map[i]];
 				}
 
-				// Render every tile.
+				// Render every tile
 				this.$node.html('');
+
 				_.map(tiles, function(tile){ _this.render(e, {tile: tile}); });
 
-				// Compute the optimal arrangement
-				var container = document.querySelector('#tileContainer');
+				// Run Packery
+				var container = this.$node[0];
 				var pckry = new Packery( container, {
 				  // options
 				  itemSelector: '.tile',
-				  gutter: 20,
-				  columnWidth: 245,
+				  gutter: 30,
+				  columnWidth: 235,
 				  containerStyle: null
 				});
 			}
@@ -78,28 +89,46 @@ define(
 			}
 
 			this.populateFeaturedTile = function(e, data) {
-				this.$node.toggleClass('featuredTileFocus');
-				this.trigger(document, 'showFeaturedTile');
+				var self = this;
+				var requestedArticle = this.getArticle(data.el.dataset.id);
+				$(this.$node.siblings('.featuredTileContainer')[0]).find('.description h1')[0].innerHTML = requestedArticle.title;
+				$(this.$node.siblings('.featuredTileContainer')[0]).find('.description p')[0].innerHTML = requestedArticle.content;
+				$(this.$node.siblings('.featuredTileContainer')[0]).find('.media')[0].innerHTML = "";
+
+				requestedArticle.media.forEach(function(imageSrc) {
+					var img = $('<img>');
+					img.attr('src', imageSrc);
+					img.appendTo($(self.$node.siblings('.featuredTileContainer')[0]).find('.media')[0]);
+				});
+
+				this.$node.addClass('featuredTileFocus');
+				this.trigger(this.$node.siblings('.featuredTileContainer')[0], 'showFeaturedTile');
 			}
 
 			this.tileGroupFocus = function(e, data) {
-				this.$node.toggleClass('featuredTileFocus');
+				this.$node.removeClass('featuredTileFocus');
+			}
+
+			this.buildOut = function(e, data) {
+				this.$node.addClass('slowAnimation');
+				this.$node.addClass('flyOut');
+			}
+
+			this.buildIn = function(e, data) {
+				setTimeout('$(".tileContainer").removeClass("flyOut"); ', 1500);
+				setTimeout('$(".tileContainer").removeClass("slowAnimation"); ', 2000);
 			}
 
 			this.after('initialize', function() {
 				var self = this;
 				this.on('click', {'individualTile': this.populateFeaturedTile});
-				this.on(document, 'dataFetched', this.renderAll);
-				this.on(document, 'hideFeaturedTile', this.tileGroupFocus);
-
-				this.worker.addEventListener('message', function(event) {
-					self.trigger(document, 'dataFetched', event.data);
-				});
-
-				this.worker.postMessage("sync");
+				this.on('buildIn', this.buildIn);
+				this.on('buildOut', this.buildOut);
+				this.on('renderTiles', this.renderAll);
+				this.on('hideFeaturedTile', this.tileGroupFocus);
+				this.articles = [];
+				this.layout = null;
 			});
-
-			this.worker = new Worker("/app/js/workers/sync.js");
 		}
 	}
 );

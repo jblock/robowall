@@ -11,23 +11,19 @@ define(
 
 		function featuredTile() {
 
-			this.defaultAttrs({
-				tileContainer: '#featuredTileContainer',
-				featuredTile: '.featuredTile'
-			});
-
 			this.showTile = function(e, data) {
-				this.$node.toggle();
+				this.$node.show();
 			}
 
 			this.hideTile = function(e, data) {
-				this.$node.toggle();
-				this.trigger(document, 'hideFeaturedTile');
+				this.$node.hide();
+				this.trigger(this.$node.siblings('.tileContainer')[0], 'hideFeaturedTile');
 			}
 
 			this.after('initialize', function() {
-				this.on(document, 'showFeaturedTile', this.showTile);
-				this.on('click', {'tileContainer': this.hideTile});
+				this.on('showFeaturedTile', this.showTile);
+				//this.on('hideFeaturedTile', this.hideTile);
+				this.on('click', this.hideTile);
 			});
 
 		}
