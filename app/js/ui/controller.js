@@ -57,7 +57,8 @@ define(
 				this.trigger($('#screen3 .tileContainer'), 'buildIn');
 
 				// Swap routines in 3 minutes
-				$('.featuredTileContainer').hide()
+				$('.featuredTileContainer').hide();
+				$('.tileContainer').removeClass('featuredTileFocus');
 				setTimeout("$(document).trigger('nextRoutine')", 180000);
 			}
 

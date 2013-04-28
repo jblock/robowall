@@ -47,22 +47,10 @@ div {
     -webkit-transform: perspective(600) translateZ(-140px);
 }
 
-.tileContainer.slowAnimation {
-    -webkit-transition-duration: .7s;
-}
-
-#screen1 .tileContainer.flyOut, #screen3 .tileContainer.flyOut {
-    -webkit-transform: translateY(-1600px) translateZ(0);
-}
-
-#screen2 .tileContainer.flyOut {
-    -webkit-transform: translateY(1800px) translateZ(0);
-}
-
 .tile {
     position: relative;
     background-color: blue;
-    -webkit-box-shadow: 0px 0px 7px 5px rgba(0, 0, 0, .3);
+    -webkit-box-shadow: 0px 0px 5px 3px rgba(0, 0, 0, .3);
     font-size: 14pt;
 }
 
@@ -92,7 +80,7 @@ div {
     bottom: 0px;
     height: 70px;
     width: 100%;
-    background-color: rgba(0, 0, 0, 0.6);
+    background-color: rgba(0, 0, 0, 0.8);
     color: #FFF;
     padding-left: 15px;
     overflow: hidden;
@@ -208,4 +196,18 @@ div {
     height: 200px;
     float: left;
     margin-top: 9px;
+}
+
+/* Tile Group Animations */
+
+.tileContainer.slowAnimation {
+    -webkit-transition-duration: .7s;
+}
+
+#screen1 .tileContainer.flyOut, #screen3 .tileContainer.flyOut {
+    -webkit-transform: translateY(-1600px) translateZ(0);
+}
+
+#screen2 .tileContainer.flyOut {
+    -webkit-transform: translateY(1800px) translateZ(0);
 }

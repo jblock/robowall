@@ -125,7 +125,7 @@ define(
 				this.on('buildIn', this.buildIn);
 				this.on('buildOut', this.buildOut);
 				this.on('renderTiles', this.renderAll);
-				this.on(document, 'hideFeaturedTile', this.tileGroupFocus);
+				this.on('hideFeaturedTile', this.tileGroupFocus);
 				this.articles = [];
 				this.layout = null;
 			});
