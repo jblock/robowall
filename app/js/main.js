@@ -8,11 +8,13 @@ require.config({
 		es5sham: 'components/es5-shim/es5-sham',
 		text: 'components/text/text',
 		sylvester: 'components/sylvester/sylvester',
-		underscore: 'components/underscore/underscore'
+		underscore: 'components/underscore/underscore',
+		THREE: 'components/threejs/build/three',
+		TWEEN: 'components/tweenjs/build/tween.min'
 	},
 	map: {
 		'*': {
-			'flight/component': 'components/flight/lib/component'
+			'flight/component': 'components/flight/lib/component',
 		}
 	},
 	shim: {
@@ -21,6 +23,12 @@ require.config({
 		},
 		'app/js/app': {
 			deps: ['components/flight/lib/index']
+		},
+		THREE: {
+			exports: 'THREE'
+		},
+		TWEEN: {
+			exports: 'TWEEN'
 		}
 	}
 });
@@ -29,9 +37,9 @@ require(
 	[
 		'app/js/app', 
 		'components/flight/lib/compose',
-    	'components/flight/lib/registry',
-    	'components/flight/lib/advice',
-    	'components/flight/lib/logger',
+  	'components/flight/lib/registry',
+  	'components/flight/lib/advice',
+  	'components/flight/lib/logger',
 		'components/flight/tools/debug/debug'
 	], function(App, compose, registry, advice, withLogging, debug) {
 		debug.enable(true);
