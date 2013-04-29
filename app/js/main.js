@@ -11,7 +11,6 @@ require.config({
 		underscore: 'components/underscore/underscore',
 		THREE: 'components/threejs/build/three',
 		TWEEN: 'components/tweenjs/build/tween.min',
-		'jquery-easing': 'components/iosslider/_lib/jquery.easing-1.3',
 		'jquery-iosslider': 'components/iosslider/_src/jquery.iosslider.min'
 	},
 	map: {
@@ -33,7 +32,7 @@ require.config({
 			exports: 'TWEEN'
 		},
 		'jquery-iosslider': {
-			deps: ['jquery', 'jquery-easing']
+			deps: ['jquery']
 		}
 	}
 });
@@ -42,9 +41,9 @@ require(
 	[
 		'app/js/app', 
 		'components/flight/lib/compose',
-  	'components/flight/lib/registry',
-  	'components/flight/lib/advice',
-  	'components/flight/lib/logger',
+	  	'components/flight/lib/registry',
+	  	'components/flight/lib/advice',
+	  	'components/flight/lib/logger',
 		'components/flight/tools/debug/debug'
 	], function(App, compose, registry, advice, withLogging, debug) {
 		debug.enable(true);

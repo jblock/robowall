@@ -93,16 +93,23 @@ define(
 				var requestedArticle = this.getArticle(data.el.dataset.id);
 				$(this.$node.siblings('.featuredTileContainer')[0]).find('.description h1')[0].innerHTML = requestedArticle.title;
 				$(this.$node.siblings('.featuredTileContainer')[0]).find('.description p')[0].innerHTML = requestedArticle.content;
-				$(this.$node.siblings('.featuredTileContainer')[0]).find('.media')[0].innerHTML = "";
+				
+				var slider = $(self.$node.siblings('.featuredTileContainer')[0]).find('.media')[0];
+				$(slider).html('');
 
 				requestedArticle.media.forEach(function(imageSrc) {
-					var img = $('<img>');
-					img.attr('src', imageSrc);
-					img.appendTo($(self.$node.siblings('.featuredTileContainer')[0]).find('.media')[0]);
+					$(slider).append('<img class="slide" src="' + imageSrc + '">');
 				});
 
 				this.$node.addClass('featuredTileFocus');
 				this.trigger(this.$node.siblings('.featuredTileContainer')[0], 'showFeaturedTile');
+			}
+
+			this.upvote = function(e, data) {
+				var articleID = data.el.dataset.id;
+				$.ajax({
+				  url: "http://robowall.hcii.cs.cmu.edu/increment-popularity.php?id=" + articleID
+				});
 			}
 
 			this.tileGroupFocus = function(e, data) {
@@ -122,6 +129,7 @@ define(
 			this.after('initialize', function() {
 				var self = this;
 				this.on('click', {'individualTile': this.populateFeaturedTile});
+				this.on('click', {'individualTile': this.upvote});
 				this.on('buildIn', this.buildIn);
 				this.on('buildOut', this.buildOut);
 				this.on('renderTiles', this.renderAll);
