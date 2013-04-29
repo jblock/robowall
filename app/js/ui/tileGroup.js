@@ -82,6 +82,18 @@ define(
 				  columnWidth: 235,
 				  containerStyle: null
 				});
+
+				// Truncate overflowed titles
+				var titles = $('.tile .title');
+				_.each(titles, function(title) {
+					var wrap = $(title).find('.wrap');
+					var height = $(title).height();
+					while (wrap.outerHeight() > height) {
+					    wrap.text(function (index, text) {
+					        return text.replace(/\W*\s(\S)*$/, '...');
+					    });
+					}
+				});
 			}
 
 			this.render = function(e, data) {
