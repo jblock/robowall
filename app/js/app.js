@@ -13,7 +13,7 @@ define(
 		var initialize = function() {
 			Controller.attachTo(document);
 			TwitterBlurb.attachTo(document);
-			// Visualizer.attachTo('#threeContainer');
+			Visualizer.attachTo('#screen1 .threeContainer');
 			FeaturedTile.attachTo('#screen1 .featuredTileContainer');
 			TileGroup.attachTo('#screen1 .tileContainer');
 

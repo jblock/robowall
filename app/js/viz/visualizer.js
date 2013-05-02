@@ -25,7 +25,7 @@ define(
 
 			this.init = function() {
 				this.renderer = new THREE.WebGLRenderer({antialias: true, alpha: false});
-				this.renderer.setSize($('#page').width(), $('#page').height());
+				this.renderer.setSize(this.$node.width(), this.$node.height());
 				this.node.appendChild(this.renderer.domElement);
 
 				this.camera = new THREE.PerspectiveCamera(40, 9 / 16, 1, 1000);
@@ -52,33 +52,25 @@ define(
 				}
 
 				// this.scene.add(mesh);
+				console.log(this.renderer);
 			}
 
 			var self = this;
 
 			this.loop = function() {
-				var animate = function() {
-					requestAnimationFrame(animate);
-					console
-					render();
-				}
+				var self = this;
 				var render = function() {
 					self.renderer.render(self.scene, self.camera);
 				}
-			}
-
-			this.animate = function() {
-				var self = this;
-				// console.log(arguments.callee);
-				requestAnimationFrame(ref.animate);
-				ref.render();
-			}
-
-			this.render = function() {
-				this.renderer.render(this.scene, this.camera);
+				var animate = function() {
+					requestAnimationFrame(animate);
+					render();
+				}
+				animate();
 			}
 
 			this.after('initialize', function() {
+				this.init();
 				this.loop();
 				console.log("THREE JS INITIALIZED");
 			});
