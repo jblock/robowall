@@ -12,15 +12,27 @@ define(
 		function featuredTile() {
 
 			this.showTile = function(e, data) {
-				this.$node.show();
-				this.createSlider();
+				var self = this;
+
+				setTimeout(function() {
+					self.$node.show();
+					self.createSlider();
+				}, 100);
 			}
 
 			this.hideTile = function(e, data) {
-				if (e.srcElement.className != "slide") {
-					this.$node.hide();
-					this.trigger(this.$node.siblings('.tileContainer')[0], 'hideFeaturedTile');
-				}
+				var self = this;
+
+				this.$node.addClass('fadeOut');
+				$(this.$node.find('.featuredTile')[0]).addClass('fadeOutUpBig');
+
+				setTimeout(function() {
+					self.$node.hide();
+					self.$node.removeClass('fadeOut');
+					$(self.$node.find('.featuredTile')[0]).removeClass('fadeOutUpBig');
+				}, 500);
+
+				this.trigger(this.$node.siblings('.tileContainer')[0], 'hideFeaturedTile');
 			}
 
 			this.createSlider = function(e, data) {
@@ -35,7 +47,6 @@ define(
 			this.after('initialize', function() {
 				this.on('showFeaturedTile', this.showTile);
 				this.on('click', this.hideTile);
-				//this.on('click', this.hideTile);
 			});
 
 		}

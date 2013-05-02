@@ -102,6 +102,14 @@ define(
 
 			this.populateFeaturedTile = function(e, data) {
 				var self = this;
+
+				// Pulse animate tile
+				$(data.el).addClass('pulse');
+
+				setTimeout(function() {
+					$(data.el).removeClass('pulse');
+				}, 1000);
+
 				var requestedArticle = this.getArticle(data.el.dataset.id);
 				$(this.$node.siblings('.featuredTileContainer')[0]).find('.description h1')[0].innerHTML = requestedArticle.title;
 				$(this.$node.siblings('.featuredTileContainer')[0]).find('.description p')[0].innerHTML = requestedArticle.content;
@@ -113,7 +121,6 @@ define(
 					$(slider).append('<img class="slide" src="' + imageSrc + '">');
 				});
 
-				this.$node.addClass('featuredTileFocus');
 				this.trigger(this.$node.siblings('.featuredTileContainer')[0], 'showFeaturedTile');
 			}
 
@@ -122,10 +129,6 @@ define(
 				$.ajax({
 				  url: "http://robowall.hcii.cs.cmu.edu/increment-popularity.php?id=" + articleID
 				});
-			}
-
-			this.tileGroupFocus = function(e, data) {
-				this.$node.removeClass('featuredTileFocus');
 			}
 
 			this.buildOut = function(e, data) {
@@ -145,7 +148,6 @@ define(
 				this.on('buildIn', this.buildIn);
 				this.on('buildOut', this.buildOut);
 				this.on('renderTiles', this.renderAll);
-				this.on('hideFeaturedTile', this.tileGroupFocus);
 				this.articles = [];
 				this.layout = null;
 			});
