@@ -72,21 +72,35 @@ define(
 				var colors = [0xEEEEEE, 0x572A3C, 0x8C3542, 0xD14038, 0xA2EBD8]
 				for (var i = 0; i < 100; i++) {
 					var temp = new THREE.Mesh(
-						new THREE.CubeGeometry( cubeSize/1.41421356237, cubeSize/1.41421356237, cubeSize/1.41421356237 ),
+						new THREE.PlaneGeometry( cubeSize/1.41421356237, cubeSize/1.41421356237, 10, 10),
 						new THREE.MeshLambertMaterial( {color: colors[Math.floor(Math.random()*5)] } )
 						);
-					console.log(Math.floor(i/perLine));
 					temp.position.x = -this.$node.width()/2 + cubeSize/2 + (i % perLine) * cubeSize;
 					temp.position.y = -this.$node.height()/2 + cubeSize/2 + (Math.floor(i/perLine)) * cubeSize;
 
-					temp.rotation.y = Math.random() * Math.PI/2;
-					temp.rotation.z = Math.random() * Math.PI/2;
+					temp.rotation.y = Math.random() * Math.PI/12;
+					// temp.rotation.z = Math.random() * Math.PI/12;
+
+					var rotation = { 'panel': temp, theta: -Math.PI/12 };
+					var target = { theta: Math.PI/12 };
+
+					temp.tweenForward = 
+						new TWEEN.Tween(rotation)
+						.to(target, Math.random()*2000 + 1000)
+						.delay(Math.random()*500)
+						.easing(TWEEN.Easing.Elastic.InOut)
+						.onUpdate(function() {
+							this.panel.rotation.y = position.y
+						});
 
 					this.scene.add(temp);
 					this.cubes.push({
 						geometry: temp,
-						speed: Math.random()*40 + 20
+						// ySpeed: Math.random()*120 + 60,
+						// zSpeed: Math.random()*120 + 60
 					});
+
+					temp.tweenForward.start();
 				}
 				window.debugCamera = this.camera;
 
@@ -102,9 +116,14 @@ define(
 				}
 				var animate = function(t) {
 					requestAnimationFrame(animate, self.renderer.domElement);
+					TWEEN.update();
+					var cube;
 					for (var i = 0; i < self.cubes.length; i++) {
-						self.cubes[i].geometry.rotation.y = self.cubes[i].geometry.rotation.y + (1/self.cubes[i].speed);
-						self.cubes[i].geometry.rotation.z = self.cubes[i].geometry.rotation.z + (1/self.cubes[i].speed);
+						cube = self.cubes[i];
+						// if (Math.abs(cube.geometry.rotation.y) > Math.PI/12) { cube.ySpeed = -cube.ySpeed; }
+						// if (Math.abs(cube.geometry.rotation.z) > Math.PI/12) { cube.zSpeed = -cube.zSpeed; }
+						// cube.geometry.rotation.y = cube.geometry.rotation.y + (1/cube.ySpeed);
+						// cube.geometry.rotation.z = cube.geometry.rotation.z + (1/cube.zSpeed);
 					}
 					// self.cube.rotation.y = (t/1000) * Math.PI/2;
 					render();

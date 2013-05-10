@@ -19,6 +19,9 @@ require.config({
 		}
 	},
 	shim: {
+		'jquery-iosslider': {
+			deps: ['jquery']
+		},
 		'components/flight/lib/index': {
 			deps: ['jquery', 'jquery-iosslider', 'es5shim', 'es5sham', 'underscore']
 		},
@@ -31,9 +34,6 @@ require.config({
 		TWEEN: {
 			exports: 'TWEEN'
 		},
-		'jquery-iosslider': {
-			deps: ['jquery']
-		}
 	}
 });
 
