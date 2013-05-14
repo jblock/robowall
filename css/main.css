@@ -1,4 +1,10 @@
 /**/
+#debug #screen1, #debug #screen2, #debug #screen3 {
+    box-sizing: border-box;
+    border: 5px solid red;
+    -webkit-transform: scale(0.4);
+}
+
 html, body {
 	margin: 0;
 	padding: 0;

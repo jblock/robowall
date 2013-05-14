@@ -10,8 +10,8 @@ require.config({
 		sylvester: 'components/sylvester/sylvester',
 		underscore: 'components/underscore/underscore',
 		THREE: 'components/threejs/build/three',
-		TWEEN: 'components/tweenjs/build/tween.min',
-		'jquery-iosslider': 'components/iosslider/_src/jquery.iosslider.min'
+		TWEEN: 'components/tweenjs/src/tween',
+		'jquery-iosslider': 'components/iosslider/_src/jquery.iosslider'
 	},
 	map: {
 		'*': {
@@ -19,9 +19,6 @@ require.config({
 		}
 	},
 	shim: {
-		'jquery-iosslider': {
-			deps: ['jquery']
-		},
 		'components/flight/lib/index': {
 			deps: ['jquery', 'jquery-iosslider', 'es5shim', 'es5sham', 'underscore']
 		},
@@ -34,6 +31,10 @@ require.config({
 		TWEEN: {
 			exports: 'TWEEN'
 		},
+		'jquery-iosslider': {
+			deps: ['jquery'],
+			exports: 'jQuery.fn.iosSlider'
+		}
 	}
 });
 

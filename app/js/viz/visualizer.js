@@ -25,6 +25,7 @@ define(
 			}
 
 			this.init = function() {
+				console.log("STARTING INIT");
 				this.renderer = new THREE.WebGLRenderer({antialias: true, alpha: true});
 				this.renderer.setSize(this.$node.width(), this.$node.height());
 				this.node.appendChild(this.renderer.domElement);
@@ -32,7 +33,7 @@ define(
 				this.camera = new THREE.PerspectiveCamera(45, 9 / 16, 1, 10000);
 				this.camera.position.x = 0;
 				this.camera.position.y = 0,
-				this.camera.position.z = 5000;
+				this.camera.position.z = 2000;
 				this.camera.lookAt(new THREE.Vector3(0, 0, 0));
 
 				this.scene = new THREE.Scene();
@@ -59,7 +60,7 @@ define(
     //     	new THREE.MeshLambertMaterial( {color: 0xEEEEEE} )
     //     	);
 				var directionalLight = new THREE.DirectionalLight( 0xE0E0E0 );
-				directionalLight.position.set( 1, 1, 1 );
+				directionalLight.position.set( 1, 1, 500 );
 				this.scene.add( directionalLight );
 
 				var ambientLight = new THREE.AmbientLight( 0x303030 );
@@ -67,42 +68,89 @@ define(
 
 			// this.scene.add(this.cube);
 
-				var perLine = 10;
-				var cubeSize = this.$node.width() / perLine;
+				var numRows = 100;
+				var numCols = 60;
+
+				var cubeSize = 20;
 				var colors = [0xEEEEEE, 0x572A3C, 0x8C3542, 0xD14038, 0xA2EBD8]
-				for (var i = 0; i < 100; i++) {
-					var temp = new THREE.Mesh(
-						new THREE.PlaneGeometry( cubeSize/1.41421356237, cubeSize/1.41421356237, 10, 10),
+				for (var i = 0; i < numRows; i++) {
+					for (var j = 0; j < numCols; j++) {
+					var plane = new THREE.Mesh(
+						new THREE.PlaneGeometry( cubeSize/1.41421356237, cubeSize/1.41421356237, 5, 5),
 						new THREE.MeshLambertMaterial( {color: colors[Math.floor(Math.random()*5)] } )
 						);
-					temp.position.x = -this.$node.width()/2 + cubeSize/2 + (i % perLine) * cubeSize;
-					temp.position.y = -this.$node.height()/2 + cubeSize/2 + (Math.floor(i/perLine)) * cubeSize;
+					plane.position.x = -cubeSize*numCols/2 + cubeSize/2 + j * cubeSize;
+					plane.position.y = -cubeSize*numRows/2 + cubeSize/2 + i * cubeSize;
 
-					temp.rotation.y = Math.random() * Math.PI/12;
-					// temp.rotation.z = Math.random() * Math.PI/12;
+					// plane.rotation.z = Math.random() * Math.PI/12;
 
-					var rotation = { 'panel': temp, theta: -Math.PI/12 };
-					var target = { theta: Math.PI/12 };
+					this.scene.add(plane);
 
-					temp.tweenForward = 
-						new TWEEN.Tween(rotation)
-						.to(target, Math.random()*2000 + 1000)
-						.delay(Math.random()*500)
-						.easing(TWEEN.Easing.Elastic.InOut)
+					var bound = Math.PI/4;
+
+					plane.rotation.y = -bound;
+
+					var start = { _ref: plane, theta: -bound };
+					var startShift = { _ref: plane, z: 0 };
+					var target = { backwardRef: plane, theta: bound };
+
+					if (Math.random() > 0.823) {
+					var forwardTween = 
+						new TWEEN.Tween(start)
+						.to({theta: bound}, Math.random()*4000+1000)
+						.delay(Math.random()*4000)
+						.easing(TWEEN.Easing.Exponential.Out)
 						.onUpdate(function() {
-							this.panel.rotation.y = position.y
+							// console.log('forward');
+							this._ref.rotation.y = this.theta;
+						})
+						.start();
+
+					var backwardTween = 
+						new TWEEN.Tween(start)
+						.to({theta: -bound}, Math.random()*4000+1000)
+						// .delay(Math.random()*500)
+						.easing(TWEEN.Easing.Exponential.Out)
+						.onUpdate(function() {
+							// console.log("back");
+							this._ref.rotation.y = this.theta;
 						});
 
-					this.scene.add(temp);
+					// var shiftTween = 
+					// 	new TWEEN.Tween(startShift)
+					// 	.to({z: Math.PI/4}, 2000)
+					// 	.delay((Math.floor(i/perLine))*400)
+					// 	.easing(TWEEN.Easing.Exponential.Out)
+					// 	.onUpdate(function() {
+					// 		this._ref.rotation.x = this.z;
+					// 	})
+					// 	.start();
+
+					// var backShiftTween = 
+					// 	new TWEEN.Tween(startShift)
+					// 	.to({z: -Math.PI/4}, Math.random()*4000+100)
+					// 	.easing(TWEEN.Easing.Exponential.Out)
+					// 	.onUpdate(function() {
+					// 		this._ref.rotation.x = this.z;
+					// 	});
+
+					forwardTween.chain(backwardTween);
+					backwardTween.chain(forwardTween);
+					// shiftTween.chain(backShiftTween);
+					// backShiftTween.chain(shiftTween);
+					// forwardTween.start();
+					}
+
 					this.cubes.push({
-						geometry: temp,
+						geometry: plane,
+						// forwardTween: forwardTween,
+						// backwardTween: backwardTween
 						// ySpeed: Math.random()*120 + 60,
 						// zSpeed: Math.random()*120 + 60
 					});
-
-					temp.tweenForward.start();
 				}
-				window.debugCamera = this.camera;
+			}
+				console.log("FINISHED INIT");
 
 			}
 
