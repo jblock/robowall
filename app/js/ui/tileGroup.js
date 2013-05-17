@@ -121,6 +121,7 @@ define(
 					$(slider).append('<img class="slide" src="' + imageSrc + '">');
 				});
 
+				this.$node.addClass('featuredTileFocus');
 				this.trigger(this.$node.siblings('.featuredTileContainer')[0], 'showFeaturedTile');
 			}
 
@@ -129,6 +130,10 @@ define(
 				$.ajax({
 				  url: "http://robowall.hcii.cs.cmu.edu/increment-popularity.php?id=" + articleID
 				});
+			}
+
+			this.tileGroupFocus = function(e, data) {
+				this.$node.removeClass('featuredTileFocus');
 			}
 
 			this.buildOut = function(e, data) {
@@ -148,6 +153,7 @@ define(
 				this.on('buildIn', this.buildIn);
 				this.on('buildOut', this.buildOut);
 				this.on('renderTiles', this.renderAll);
+				this.on('hideFeaturedTile', this.tileGroupFocus);
 				this.articles = [];
 				this.layout = null;
 			});
