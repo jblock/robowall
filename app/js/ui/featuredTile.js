@@ -20,6 +20,7 @@ define(
 				if (e.srcElement.className != "slide") {
 					this.$node.hide();
 					this.trigger(this.$node.siblings('.tileContainer')[0], 'hideFeaturedTile');
+					this.trigger('.threeContainer', 'hideFeaturedTile');
 				}
 			}
 

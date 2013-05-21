@@ -21,7 +21,8 @@ div {
     position: relative;
     width: 1080px;
     height: 1920px;
-    background: -webkit-linear-gradient(top, #000000 0%,#565152 20%,#565152 60%,#000000 100%);
+    /*background: -webkit-linear-gradient(top, #000000 0%,#565152 20%,#565152 60%,#000000 100%);*/
+    background: black;
     float: left;
     overflow: hidden;
 }

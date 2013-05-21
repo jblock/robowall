@@ -16,7 +16,16 @@ define(
 			this.scene;
 			this.cube;
 
+			this.renderModel;
+			this.effectBloom;
+			// this.effectCopy; // For Shaders
+
+			this.composer;
+
 			this.cubes = [];
+			this.lights = {};
+
+			this.state;
 
 			this.particleRender = function(context) {
 				context.beginPath();
@@ -33,156 +42,165 @@ define(
 				this.camera = new THREE.PerspectiveCamera(45, 9 / 16, 1, 10000);
 				this.camera.position.x = 0;
 				this.camera.position.y = 0,
-				this.camera.position.z = 2000;
+				this.camera.position.z = 1000;
 				this.camera.lookAt(new THREE.Vector3(0, 0, 0));
 
 				this.scene = new THREE.Scene();
 
-				// var particle, material;
-				// for (var i = 0; i < 200; i++) {
-				// 	material = new THREE.ParticleCanvasMaterial( {color: 0xffffff, program: this.particleRender} );
-				// 	particle = new THREE.Particle(material);
+				// COLORS!!
+				var colors = [0xEEEEEE, 0x572A3C, 0x8C3542, 0xD14038, 0xA2EBD8];
+				
+				var leftMid = new THREE.PointLight( colors[0], 3, 1000 );
+				leftMid.position.set(-300, -700, 0);
+				var rightMid = new THREE.PointLight( colors[1], 3, 1000 );
+				rightMid.position.set(300, -700, 0);
+				var bottomAmbient = new THREE.PointLight( colors[2], 3, 2000 );
+				bottomAmbient.position.set(-400, 600, 5);
 
-				// 	particle.position.y = Math.random() * 1000 - 500;
-				// 	particle.position.x = Math.random() * 1000 - 500;
-				// 	particle.position.z = 0;
+				window.bottomAmbient = bottomAmbient;
+				window.leftMid = leftMid;
+				window.rightMid = rightMid;
 
-				// 	particle.scale.x = particle.scale.y = 10;
+				this.scene.add(leftMid);
+				this.scene.add(rightMid);
+				this.scene.add(bottomAmbient);
 
-				// 	this.scene.add(particle);
-				// 	this.particles.push(particle);
-				// }
-
-				// // this.scene.add(mesh);
-				// console.log(this.scene);
-				// this.cube = new THREE.Mesh(
-    //     	new THREE.CubeGeometry( 50, 50, 50 ),
-    //     	new THREE.MeshLambertMaterial( {color: 0xEEEEEE} )
-    //     	);
-				var directionalLight = new THREE.DirectionalLight( 0xE0E0E0 );
-				directionalLight.position.set( 1, 1, 500 );
-				this.scene.add( directionalLight );
-
-				var ambientLight = new THREE.AmbientLight( 0x303030 );
+				this.lights.bottomAmbient = bottomAmbient;
+		
+				var ambientLight = new THREE.AmbientLight( 0x444444 );
 				this.scene.add( ambientLight );
 
-			// this.scene.add(this.cube);
+				var numRows = 100; //100
+				var numCols = 50; //60
 
-				var numRows = 100;
-				var numCols = 60;
-
-				var cubeSize = 20;
-				var colors = [0xEEEEEE, 0x572A3C, 0x8C3542, 0xD14038, 0xA2EBD8]
+				var cubeSize = 20/1.41421356237;
 				for (var i = 0; i < numRows; i++) {
 					for (var j = 0; j < numCols; j++) {
-					var plane = new THREE.Mesh(
-						new THREE.PlaneGeometry( cubeSize/1.41421356237, cubeSize/1.41421356237, 5, 5),
-						new THREE.MeshLambertMaterial( {color: colors[Math.floor(Math.random()*5)] } )
-						);
-					plane.position.x = -cubeSize*numCols/2 + cubeSize/2 + j * cubeSize;
-					plane.position.y = -cubeSize*numRows/2 + cubeSize/2 + i * cubeSize;
+						var cube = {};
+						var plane = new THREE.Mesh(
+							new THREE.PlaneGeometry( cubeSize*.95, cubeSize*.95, 5, 5),
+							new THREE.MeshPhongMaterial( {
+								color: 0x555555, 
+								ambient: 0x555555,
+								specular: 0xffffff, 
+								shininess: 10, 
+								shading: THREE.SmoothShading
+								} )
+							);
+						plane.position.x = -cubeSize*numCols/2 + cubeSize/2*0 + j * cubeSize;
+						plane.position.y = -cubeSize*numRows/2 + cubeSize/2*0 + i * cubeSize;
+						plane.rotation.x = i / numRows * -Math.PI/6;
 
-					// plane.rotation.z = Math.random() * Math.PI/12;
+						this.scene.add(plane);
 
-					this.scene.add(plane);
+						var bound = Math.PI/3;
 
-					var bound = Math.PI/4;
+						// plane.rotation.y = -bound;
 
-					plane.rotation.y = -bound;
+						var start = { _ref: plane, theta: -bound };
+						var startShift = { _ref: plane, z: 0 };
+						var target = { backwardRef: plane, theta: bound };
 
-					var start = { _ref: plane, theta: -bound };
-					var startShift = { _ref: plane, z: 0 };
-					var target = { backwardRef: plane, theta: bound };
+						if (Math.random() > 0.823) {
+							cube.forwardTween = 
+								new TWEEN.Tween(start)
+								.to({theta: bound}, Math.random()*4000+1000)
+								.delay(Math.random()*4000)
+								.easing(TWEEN.Easing.Exponential.Out)
+								.onUpdate(function() {
+									// console.log('forward');
+									this._ref.rotation.y = this.theta;
+								});
+								// .start();
 
-					if (Math.random() > 0.823) {
-					var forwardTween = 
-						new TWEEN.Tween(start)
-						.to({theta: bound}, Math.random()*4000+1000)
-						.delay(Math.random()*4000)
-						.easing(TWEEN.Easing.Exponential.Out)
-						.onUpdate(function() {
-							// console.log('forward');
-							this._ref.rotation.y = this.theta;
-						})
-						.start();
+							cube.backwardTween = 
+								new TWEEN.Tween(start)
+								.to({theta: -bound}, Math.random()*4000+1000)
+								// .delay(Math.random()*500)
+								.easing(TWEEN.Easing.Exponential.Out)
+								.onUpdate(function() {
+									// console.log("back");
+									this._ref.rotation.y = this.theta;
+								});
 
-					var backwardTween = 
-						new TWEEN.Tween(start)
-						.to({theta: -bound}, Math.random()*4000+1000)
-						// .delay(Math.random()*500)
-						.easing(TWEEN.Easing.Exponential.Out)
-						.onUpdate(function() {
-							// console.log("back");
-							this._ref.rotation.y = this.theta;
-						});
+							// var shiftTween = 
+							// 	new TWEEN.Tween(startShift)
+							// 	.to({z: Math.PI/4}, 2000)
+							// 	.delay((Math.floor(i/perLine))*400)
+							// 	.easing(TWEEN.Easing.Exponential.Out)
+							// 	.onUpdate(function() {
+							// 		this._ref.rotation.x = this.z;
+							// 	})
+							// 	.start();
 
-					// var shiftTween = 
-					// 	new TWEEN.Tween(startShift)
-					// 	.to({z: Math.PI/4}, 2000)
-					// 	.delay((Math.floor(i/perLine))*400)
-					// 	.easing(TWEEN.Easing.Exponential.Out)
-					// 	.onUpdate(function() {
-					// 		this._ref.rotation.x = this.z;
-					// 	})
-					// 	.start();
+							// var backShiftTween = 
+							// 	new TWEEN.Tween(startShift)
+							// 	.to({z: -Math.PI/4}, Math.random()*4000+100)
+							// 	.easing(TWEEN.Easing.Exponential.Out)
+							// 	.onUpdate(function() {
+							// 		this._ref.rotation.x = this.z;
+							// 	});
 
-					// var backShiftTween = 
-					// 	new TWEEN.Tween(startShift)
-					// 	.to({z: -Math.PI/4}, Math.random()*4000+100)
-					// 	.easing(TWEEN.Easing.Exponential.Out)
-					// 	.onUpdate(function() {
-					// 		this._ref.rotation.x = this.z;
-					// 	});
+							cube.forwardTween.chain(cube.backwardTween);
+							cube.backwardTween.chain(cube.forwardTween);
+							// shiftTween.chain(backShiftTween);
+							// backShiftTween.chain(shiftTween);
+							// forwardTween.start();
+						}
 
-					forwardTween.chain(backwardTween);
-					backwardTween.chain(forwardTween);
-					// shiftTween.chain(backShiftTween);
-					// backShiftTween.chain(shiftTween);
-					// forwardTween.start();
+						cube.geometry = plane;
+						this.cubes.push(cube);
 					}
-
-					this.cubes.push({
-						geometry: plane,
-						// forwardTween: forwardTween,
-						// backwardTween: backwardTween
-						// ySpeed: Math.random()*120 + 60,
-						// zSpeed: Math.random()*120 + 60
-					});
 				}
-			}
+
+				this.state = 0;
 				console.log("FINISHED INIT");
 
 			}
 
-			// var self = this;
+			this.startMotion = function() {
+				for (var i = 0; i < this.cubes.length; i++) {
+					if (this.cubes[i].forwardTween) {
+						this.cubes[i].forwardTween.start();
+					}
+				}
+			}
+
+			this.disableMovingStuff = function() {
+				this.state = 1;
+			}
+
+			this.enableMovingStuff = function() {
+				this.state = 0;
+			}
 
 			this.loop = function() {
 				var self = this;
+				
 				var render = function() {
 					self.renderer.clear();
 					self.renderer.render(self.scene, self.camera);
 				}
-				var animate = function(t) {
+				
+				var animate = function(time) {
 					requestAnimationFrame(animate, self.renderer.domElement);
-					TWEEN.update();
-					var cube;
-					for (var i = 0; i < self.cubes.length; i++) {
-						cube = self.cubes[i];
-						// if (Math.abs(cube.geometry.rotation.y) > Math.PI/12) { cube.ySpeed = -cube.ySpeed; }
-						// if (Math.abs(cube.geometry.rotation.z) > Math.PI/12) { cube.zSpeed = -cube.zSpeed; }
-						// cube.geometry.rotation.y = cube.geometry.rotation.y + (1/cube.ySpeed);
-						// cube.geometry.rotation.z = cube.geometry.rotation.z + (1/cube.zSpeed);
-					}
-					// self.cube.rotation.y = (t/1000) * Math.PI/2;
+					if (self.state !== 1) TWEEN.update();
 					render();
 				}
+				
 				animate(new Date().getTime());
 			}
 
 			this.after('initialize', function() {
+
+				this.on('showFeaturedTile', this.disableMovingStuff);
+				this.on('hideFeaturedTile', this.enableMovingStuff);
+
 				this.init();
-				this.loop();
 				console.log("THREE JS INITIALIZED");
+				this.startMotion();
+				this.loop();
+				console.log("THREE JS ANIMATING");
 			});
 		}
 	}

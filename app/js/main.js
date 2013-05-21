@@ -26,6 +26,7 @@ require.config({
 			deps: ['components/flight/lib/index']
 		},
 		THREE: {
+			// deps: ['components/threejs/examples/js/postprocessing/BloomPass', 'components/threejs/examples/js/postprocessing/EffectComposer', 'components/threejs/examples/js/postprocessing/RenderPass'],
 			exports: 'THREE'
 		},
 		TWEEN: {
@@ -42,9 +43,9 @@ require(
 	[
 		'app/js/app', 
 		'components/flight/lib/compose',
-	  	'components/flight/lib/registry',
-	  	'components/flight/lib/advice',
-	  	'components/flight/lib/logger',
+  	'components/flight/lib/registry',
+  	'components/flight/lib/advice',
+  	'components/flight/lib/logger',
 		'components/flight/tools/debug/debug'
 	], function(App, compose, registry, advice, withLogging, debug) {
 		debug.enable(true);
