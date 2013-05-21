@@ -50,9 +50,9 @@ div {
     z-index: 10;
 }
 
-.tileContainer.featuredTileFocus {
-    -webkit-transform: perspective(600) translateZ(-140px);
-}
+/*.tileContainer.featuredTileFocus {
+    -webkit-filter: grayscale(1) blur(10px);
+}*/
 
 .tile {
     position: relative;
@@ -109,7 +109,7 @@ div {
     height: 1920px;
     top: 0px;
     left: 0px;
-    background: rgba(0, 0, 0, 0.7);
+    background: rgba(0, 0, 0, 0.65);
     display: none;
 }
 

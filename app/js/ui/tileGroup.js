@@ -102,6 +102,14 @@ define(
 
 			this.populateFeaturedTile = function(e, data) {
 				var self = this;
+
+				// Pulse animate tile
+				$(data.el).addClass('pulse');
+
+				setTimeout(function() {
+					$(data.el).removeClass('pulse');
+				}, 1000);
+
 				var requestedArticle = this.getArticle(data.el.dataset.id);
 				$(this.$node.siblings('.featuredTileContainer')[0]).find('.description h1')[0].innerHTML = requestedArticle.title;
 				$(this.$node.siblings('.featuredTileContainer')[0]).find('.description p')[0].innerHTML = requestedArticle.content;
