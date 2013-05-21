@@ -51,26 +51,26 @@ define(
 				var colors = [0xEEEEEE, 0x572A3C, 0x8C3542, 0xD14038, 0xA2EBD8];
 				
 				var leftMid = new THREE.PointLight( colors[0], 3, 1000 );
-				leftMid.position.set(-300, -700, 0);
+				leftMid.position.set(-300, -550, 0);
 				var rightMid = new THREE.PointLight( colors[1], 3, 1000 );
-				rightMid.position.set(300, -700, 0);
+				rightMid.position.set(300, 550, 0);
 				var bottomAmbient = new THREE.PointLight( colors[2], 3, 2000 );
-				bottomAmbient.position.set(-400, 600, 5);
-
-				window.bottomAmbient = bottomAmbient;
-				window.leftMid = leftMid;
-				window.rightMid = rightMid;
+				bottomAmbient.position.set(0, 600, 5);
 
 				this.scene.add(leftMid);
 				this.scene.add(rightMid);
 				this.scene.add(bottomAmbient);
 
+				this.lights.leftMid = leftMid;
+				this.lights.rightMid = rightMid;
 				this.lights.bottomAmbient = bottomAmbient;
+
+				window.lights = this.lights;
 		
 				var ambientLight = new THREE.AmbientLight( 0x444444 );
 				this.scene.add( ambientLight );
 
-				var numRows = 100; //100
+				var numRows = 60; //100
 				var numCols = 50; //60
 
 				var cubeSize = 20/1.41421356237;
@@ -89,7 +89,7 @@ define(
 							);
 						plane.position.x = -cubeSize*numCols/2 + cubeSize/2*0 + j * cubeSize;
 						plane.position.y = -cubeSize*numRows/2 + cubeSize/2*0 + i * cubeSize;
-						plane.rotation.x = i / numRows * -Math.PI/6;
+						plane.rotation.x = (.5 - i / numRows) * -Math.PI/4;
 
 						this.scene.add(plane);
 
