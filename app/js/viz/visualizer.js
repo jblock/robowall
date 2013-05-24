@@ -74,22 +74,23 @@ define(
 				var numCols = 50; //60
 
 				var cubeSize = 20/1.41421356237;
-				for (var i = 0; i < numRows; i++) {
-					for (var j = 0; j < numCols; j++) {
-						var cube = {};
-						var plane = new THREE.Mesh(
-							new THREE.PlaneGeometry( cubeSize*.95, cubeSize*.95, 5, 5),
-							new THREE.MeshPhongMaterial( {
+				var geometry = new THREE.PlaneGeometry( cubeSize*.95, cubeSize*.95, 5, 5)
+				var material = new THREE.MeshPhongMaterial( {
 								color: 0x555555, 
 								ambient: 0x555555,
 								specular: 0xffffff, 
 								shininess: 10, 
 								shading: THREE.SmoothShading
 								} )
+				for (var i = 0; i < numRows; i++) {
+					for (var j = 0; j < numCols; j++) {
+						var cube = {};
+						var plane = new THREE.Mesh(
+							geometry, material
 							);
 						plane.position.x = -cubeSize*numCols/2 + cubeSize/2*0 + j * cubeSize;
 						plane.position.y = -cubeSize*numRows/2 + cubeSize/2*0 + i * cubeSize;
-						plane.rotation.x = (.5 - i / numRows) * -Math.PI/4;
+						plane.rotation.x = (0.5 - i / numRows) * -Math.PI/4;
 
 						this.scene.add(plane);
 
