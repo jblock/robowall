@@ -22,7 +22,7 @@ define(
 			// Speed parameters
 			// Bigger is slower. Smaller is faster.
             this.fastSpeed = 5000;
-            this.slowSpeed = 40000;
+            this.slowSpeed = 80000;
 
 			var requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame ||
                               window.webkitRequestAnimationFrame || window.msRequestAnimationFrame;

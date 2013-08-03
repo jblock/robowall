@@ -7,7 +7,18 @@
 	<link href='http://fonts.googleapis.com/css?family=Titillium+Web:400,200' rel='stylesheet' type='text/css'>
 </head>
 <body>
-	<script>var acceleration = 0;</script>
+
+	<!-- Magic Vision Stuff -->
+	<div id="visionContainer">
+		<video id="webcam" autoplay width="640" height="480"></video>
+	    <canvas id="canvas-source" width="640" height="480"></canvas>
+	    <canvas id="canvas-highlights" width="640" height="480"></canvas>
+	    <canvas id="canvas-blended" width="640" height="480"></canvas>
+	    <div id="hotSpots">
+	        <div id="fullScreen"></div>
+	    </div>
+	</div>
+    <!-- End Magic -->
 	
 	<div id="screen">
 		<div id="name"></div>
@@ -57,5 +68,6 @@
 	
 	<script src="app/js/packery.js"></script>
 	<script data-main="app/js/main" src="components/requirejs/require.js"></script>
+	<script src="app/js/vision.js"></script>
 </body>
 </html>

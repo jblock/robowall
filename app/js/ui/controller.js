@@ -72,6 +72,9 @@ define(
 				});
 
 				this.worker.postMessage("sync");
+
+				/* Comment me out for debugging */
+				setupVision();
 			});
 
 			this.worker = new Worker("/app/js/workers/sync.js");

@@ -235,16 +235,58 @@ div {
     margin-top: 9px;
 }
 
-/* Tile Group Animations */
-
-.tileContainer.slowAnimation {
-    -webkit-transition-duration: .7s;
+/* Webcam vision stuff */
+#visionContainer video {
+    display: none;
 }
 
-#screen1 .tileContainer.flyOut, #screen3 .tileContainer.flyOut {
-    -webkit-transform: translateY(-1600px) translateZ(0);
+#visionContainer {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    overflow: hidden;
+    z-index: 0;
+    visibility: hidden;
+    width: 200px;
+    height: auto;
 }
 
-#screen2 .tileContainer.flyOut {
-    -webkit-transform: translateY(1800px) translateZ(0);
+#canvas-source {
+    width: 100%;
+}
+
+#canvas-source, #canvas-highlights {
+    display: none;
+    position: absolute;
+    left: 0;
+    top: 0;
+}
+
+#canvas-blended {
+    display: none;
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    opacity: 0;
+}
+
+#hotSpots {
+    position: relative;
+    display: none;
+    height: 100%;
+}
+
+#hotSpots > * {
+    position: absolute;
+    -moz-transition: all 80ms linear;
+    -webkit-transition: all 80ms linear;
+    transition: all 80ms linear;
+}
+
+#fullScreen {
+    width: 100%;
+    height: 100%;
+    left: 0;
 }
