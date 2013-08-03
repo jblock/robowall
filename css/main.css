@@ -58,6 +58,8 @@ div {
     height: 438px;
     -webkit-transition: opacity ease-in-out;
     -webkit-transition-duration: 1s;
+    /* Trick to force the GPU to help out */
+    -webkit-transform: rotateZ(360deg);
 }
 
 .hidden {
