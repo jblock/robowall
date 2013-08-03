@@ -7,10 +7,16 @@
 	<link href='http://fonts.googleapis.com/css?family=Titillium+Web:400,200' rel='stylesheet' type='text/css'>
 </head>
 <body>
-<!-- 	<div id="screen1">
+	<script>var acceleration = 0;</script>
+	
+	<div id="screen">
+		<div id="name"></div>
 		<div class="threeContainer"></div>
-		<div class="tileContainer"></div>
-		<div class="featuredTileContainer animated fadeIn">
+		<div class="tileContainer">
+			<div class="topStream stream"></div>
+			<div class="botStream stream"></div>
+		</div>
+		<div class="featuredTileContainer animated fadeIn first">
 			<div class="featuredTile animated fadeInDownBig">
 				<div class="mediaContainer">
 					<div class="media"></div>
@@ -21,13 +27,18 @@
 				</div>
 			</div>
 		</div>
-	</div> -->
-	
-	<div id="screen2">
-		<div id="name"></div>
-		<div class="threeContainer"></div>
-		<div class="tileContainer"></div>
-		<div class="featuredTileContainer animated fadeIn">
+		<div class="featuredTileContainer animated fadeIn second">
+			<div class="featuredTile animated fadeInDownBig">
+				<div class="mediaContainer">
+					<div class="media"></div>
+				</div>
+				<div class="description">
+					<h1></h1>
+					<p></p>
+				</div>
+			</div>
+		</div>
+		<div class="featuredTileContainer animated fadeIn third">
 			<div class="featuredTile animated fadeInDownBig">
 				<div class="mediaContainer">
 					<div class="media"></div>
@@ -43,22 +54,6 @@
 			<div class="RI"></div>
 		</div>
 	</div>
-
-<!-- 	<div id="screen3">
-		<div class="threeContainer"></div>
-		<div class="tileContainer"></div>
-		<div class="featuredTileContainer animated fadeIn">
-			<div class="featuredTile animated fadeInDownBig">
-				<div class="mediaContainer">
-					<div class="media"></div>
-				</div>
-				<div class="description">
-					<h1></h1>
-					<p></p>
-				</div>
-			</div>
-		</div>
-	</div> -->
 	
 	<script src="app/js/packery.js"></script>
 	<script data-main="app/js/main" src="components/requirejs/require.js"></script>

@@ -17,9 +17,9 @@ div {
 	box-sizing: border-box;
 }
 
-#screen1, #screen2, #screen3 {
+#screen {
     position: relative;
-    width: 1080px;
+    width: 3240px;
     height: 1920px;
     /*background: -webkit-linear-gradient(top, #000000 0%,#565152 20%,#565152 60%,#000000 100%);*/
     background: black;
@@ -44,40 +44,61 @@ div {
     -webkit-transform: perspective(600) translateZ(0px);
     -webkit-transition: all ease-in-out;
     -webkit-transition-duration: 0.4s;
-    margin: 300px 20px 0px 20px;
-    width: 1040px;
-    height: 875px;
+    margin: 290px 0px 0px 0px;
+    width: 4320px;
+    height: auto;
     z-index: 10;
+    opacity: 1;
 }
 
-/*.tileContainer.featuredTileFocus {
-    -webkit-filter: grayscale(1) blur(10px);
-}*/
+.topStream, .botStream {
+    position: relative;
+    box-sizing: border-box;
+    width: 32;
+    height: 438px;
+    -webkit-transition: opacity ease-in-out;
+    -webkit-transition-duration: 1s;
+}
+
+.hidden {
+    opacity: 0;
+}
+
+.topStream {
+    margin-bottom: 30px;
+}
 
 .tile {
     position: relative;
     background-color: blue;
     -webkit-box-shadow: 0px 0px 5px 3px rgba(0, 0, 0, .3);
     font-size: 14pt;
+    opacity: 1;
+    -webkit-transition: opacity ease-in-out;
+    -webkit-transition-duration: .2s;
+}
+
+.transparent {
+    opacity: .5;
 }
 
 .tile[data-size="1x1"] {
-    width: 235px;
+    width: 240px;
     height: 285px;
 }
 
 .tile[data-size="2x1"] {
-    width: 500px;
+    width: 510px;
     height: 285px;
 }
 
 .tile[data-size="2x2"] {
-    width: 500px;
+    width: 510px;
     height: 600px;
 }
 
 .tile[data-size="3x2"] {
-    width: 765px;
+    width: 780px;
     height: 600px;
 }
 
@@ -111,6 +132,14 @@ div {
     left: 0px;
     background: rgba(0, 0, 0, 0.65);
     display: none;
+}
+
+.featuredTileContainer.second {
+    left: 1080px;
+}
+
+.featuredTileContainer.third {
+    left: 2160px;
 }
 
 .featuredTile {
@@ -179,8 +208,9 @@ div {
     width: auto;
     height: auto;
     bottom: 83px;
-    left: 368px;
+    left: 1450px;
     opacity: .15;
+
 }
 
 #logos .HCII {

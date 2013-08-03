@@ -31,6 +31,10 @@ define(
 				this.trigger(document, 'nextRoutine');
 			}
 
+			this.toggleSpeed = function(e, data) {
+				this.trigger($('#screen .tileContainer .stream'), 'toggleStreamSpeed');
+			}
+
 			this.nextRoutine = function(e, data) {
 				var self = this;
 				if (this.currentRoutine < (this.routines.length-1)) {
@@ -40,21 +44,16 @@ define(
 				}
 
 				// Trigger transition out
-				this.trigger($('#screen1 .tileContainer'), 'buildOut');
-				this.trigger($('#screen2 .tileContainer'), 'buildOut');
-				this.trigger($('#screen3 .tileContainer'), 'buildOut');
+				this.trigger($('#screen .tileContainer .stream'), 'buildOut');
 
 				// Draw tiles
 				setTimeout(function() {
-					self.trigger($('#screen1 .tileContainer'), 'renderTiles', { articles: self.routines[self.currentRoutine].slice(0,9) });
-					self.trigger($('#screen2 .tileContainer'), 'renderTiles', { articles: self.routines[self.currentRoutine].slice(9,18) });
-					self.trigger($('#screen3 .tileContainer'), 'renderTiles', { articles: self.routines[self.currentRoutine].slice(18,27) });
+					self.trigger($('#screen .tileContainer .topStream'), 'renderTiles', { articles: self.routines[self.currentRoutine].slice(0,13) });
+					self.trigger($('#screen .tileContainer .botStream'), 'renderTiles', { articles: self.routines[self.currentRoutine].slice(13,27) });
 				}, 1000);
 
 				// Trigger transition in
-				this.trigger($('#screen1 .tileContainer'), 'buildIn');
-				this.trigger($('#screen2 .tileContainer'), 'buildIn');
-				this.trigger($('#screen3 .tileContainer'), 'buildIn');
+				this.trigger($('#screen .tileContainer .stream'), 'buildIn');
 
 				// Swap routines in 3 minutes
 				$('.featuredTileContainer').hide();
@@ -66,6 +65,7 @@ define(
 				var self = this;
 				this.on(document, 'dataFetched', this.updateData);
 				this.on(document, 'nextRoutine', this.nextRoutine);
+				this.on(document, 'toggleSpeed', this.toggleSpeed);
 
 				this.worker.addEventListener('message', function(event) {
 					self.trigger(document, 'dataFetched', event.data);
