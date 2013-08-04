@@ -103,7 +103,7 @@ define(
 					    });
 					}
 				});
-
+				
 				// Begin animation
 				requestAnimationFrame(this.animate.bind(this));
 			}
@@ -129,24 +129,31 @@ define(
 					$(this.$node.parent().parent().children().filter('.featuredTileContainer')[0]).find('.description h1')[0].innerHTML = requestedArticle.title;
 					$(this.$node.parent().parent().children().filter('.featuredTileContainer')[0]).find('.description p')[0].innerHTML = requestedArticle.content;
 					
+					// Find media slider
 					var slider = $(this.$node.parent().parent().children().filter('.featuredTileContainer')[0]).find('.media')[0];
 					$(slider).html('');
 
+					// Add media
 					requestedArticle.media.forEach(function(imageSrc) {
 						$(slider).append('<img class="slide" src="' + imageSrc + '">');
 					});
 
 					this.$node.addClass('featuredTileFocus');
 					this.trigger($(this.$node.parent().parent().children().filter('.featuredTileContainer')[0]), 'showFeaturedTile');
+
+					// Make description scrollable
+					var scroll = new IScroll('#scroller1');
 				
 				// Second screen
 				} else if (e.clientX <= 2160) {
 					$(this.$node.parent().parent().children().filter('.featuredTileContainer')[1]).find('.description h1')[0].innerHTML = requestedArticle.title;
 					$(this.$node.parent().parent().children().filter('.featuredTileContainer')[1]).find('.description p')[0].innerHTML = requestedArticle.content;
 					
+					// Find media slider
 					var slider = $(this.$node.parent().parent().children().filter('.featuredTileContainer')[1]).find('.media')[0];
 					$(slider).html('');
 
+					// Add media
 					requestedArticle.media.forEach(function(imageSrc) {
 						$(slider).append('<img class="slide" src="' + imageSrc + '">');
 					});
@@ -154,20 +161,28 @@ define(
 					this.$node.addClass('featuredTileFocus');
 					this.trigger($(this.$node.parent().parent().children().filter('.featuredTileContainer')[1]), 'showFeaturedTile');
 
+					// Make description scrollable
+					var scroll = new IScroll('#scroller2');
+
 				// Third screen
 				} else {
 					$(this.$node.parent().parent().children().filter('.featuredTileContainer')[2]).find('.description h1')[0].innerHTML = requestedArticle.title;
 					$(this.$node.parent().parent().children().filter('.featuredTileContainer')[2]).find('.description p')[0].innerHTML = requestedArticle.content;
 					
+					// Find media slider
 					var slider = $(this.$node.parent().parent().children().filter('.featuredTileContainer')[2]).find('.media')[0];
 					$(slider).html('');
 
+					// Add media
 					requestedArticle.media.forEach(function(imageSrc) {
 						$(slider).append('<img class="slide" src="' + imageSrc + '">');
 					});
 
 					this.$node.addClass('featuredTileFocus');
 					this.trigger($(this.$node.parent().parent().children().filter('.featuredTileContainer')[2]), 'showFeaturedTile');
+
+					// Make description scrollable
+					var scroll = new IScroll('#scroller3');
 				}
 			}
 
