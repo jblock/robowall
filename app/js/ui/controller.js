@@ -16,6 +16,10 @@ define(
 
 			this.updateData = function(e, data) {
 				var self = this;
+
+				// Reset routines
+				self.routines = [];
+
 				var allArticles = _.sortBy(data.articles, "popularity").reverse();
 
 				// Sort articles by routine
@@ -24,7 +28,9 @@ define(
 						var routineArticles = _.filter(allArticles, function(article) { 
 							return (_.contains(article.routines, routine.id) == true);
 						});
-						self.routines.push(routineArticles);
+						if (routineArticles.length >= 15) {
+							self.routines.push(routineArticles);
+						}
 					}
 				});
 
@@ -48,8 +54,12 @@ define(
 
 				// Draw tiles
 				setTimeout(function() {
-					self.trigger($('#screen .tileContainer .topStream'), 'renderTiles', { articles: self.routines[self.currentRoutine].slice(0,13) });
-					self.trigger($('#screen .tileContainer .botStream'), 'renderTiles', { articles: self.routines[self.currentRoutine].slice(13,27) });
+					var halfLength = Math.ceil(self.routines[self.currentRoutine].length / 2); 
+					var leftSide = self.routines[self.currentRoutine].slice(0, halfLength);   
+					var rightSide = self.routines[self.currentRoutine].slice(halfLength,self.routines[self.currentRoutine].length);
+
+					self.trigger($('#screen .tileContainer .topStream'), 'renderTiles', { articles: leftSide });
+					self.trigger($('#screen .tileContainer .botStream'), 'renderTiles', { articles: rightSide });
 				}, 1000);
 
 				// Trigger transition in

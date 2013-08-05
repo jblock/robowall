@@ -42,6 +42,9 @@ define(
 				{ sizes: [ '3x2', '2x2', '2x2', '2x2', '2x1', '2x1', '2x1', '1x1', '1x1', '3x2'],
 					map: [0, 1, 3, 4, 2, 9, 5, 6, 7, 8]
 				},
+				{ sizes: [ '3x2', '3x2', '2x2', '2x2', '2x2', '2x2', '2x2'],
+					map: [0, 5, 2, 3, 4, 1, 6]
+				}
 			];
 
 			this.getArticle = function(articleID) {
@@ -59,7 +62,15 @@ define(
 				var tiles = [];
 
 				// Choose layout
-				this.layout = LAYOUTS[Math.floor(Math.random()*LAYOUTS.length)];
+				var layoutFound = false;
+
+				while (!layoutFound) {
+					this.layout = LAYOUTS[Math.floor(Math.random()*LAYOUTS.length)];
+
+					if (this.layout.sizes.length <= data.articles.length) {
+						layoutFound = true;
+					}
+				}
 
 				// Sort articles by popularity in descending order
 				this.articles = data.articles;
