@@ -22,11 +22,12 @@ define(
 			// Speed parameters
 			// Bigger is slower. Smaller is faster.
             this.fastSpeed = 5000;
-            this.slowSpeed = 80000;
+            this.slowSpeed = 160000;
+            this.animateFast = true;
 
 			var requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame ||
                               window.webkitRequestAnimationFrame || window.msRequestAnimationFrame;
-            this.currentTime = null;
+            this.lastAnimationCycle = 0;
             this.cycleLength = this.fastSpeed;
 
 			// Create a set of arrangements to pick from.
@@ -200,7 +201,34 @@ define(
 			this.animate = function(time) {
 				var self = this;
         		var width = 4320;
-        		var offset = (time % self.cycleLength)/self.cycleLength * width;
+
+        		var timeDiff = time - self.lastAnimationCycle;
+
+        		// Currently accelerating
+        		if ((this.animateFast == true) && (this.cycleLength > this.fastSpeed)) {
+        			
+        			var speedDelta = (timeDiff/1000) * (this.slowSpeed - this.fastSpeed);
+        			
+        			if ((this.cycleLength - speedDelta) >= this.fastSpeed) {
+        				this.cycleLength -= speedDelta;
+        			} else {
+        				this.cycleLength = this.fastSpeed;
+        			}
+
+        		// Currently decelerating
+        		} else if ((this.animateFast == false) && (this.cycleLength < this.slowSpeed)) {
+
+        			var speedDelta = (timeDiff/1000) * (this.slowSpeed - this.fastSpeed);
+        			
+        			if ((this.cycleLength + speedDelta) <= this.slowSpeed) {
+        				this.cycleLength += speedDelta;
+        			} else {
+        				this.cycleLength = this.slowSpeed;
+        			}
+
+        		}
+        		
+ 				var distMoved = (timeDiff/self.cycleLength) * width;
 
 				$(this.$node).children().each(function(i) {
 
@@ -210,27 +238,28 @@ define(
 					if ($(self.$node).hasClass('topStream')) {
 
 						var left = Number($(this).css('left').replace('px',''));
-						this.translated = (left + offset) % width - left - 800;
-						$(this).css('-webkit-transform', 'translateX(' + this.translated + 'px)');
+						this.translated = (left + this.translated + distMoved) % width - left;
+						$(this).css('-webkit-transform', 'translateX(' + (this.translated - 800) + 'px)');
 
 					// Animate bottom stream
 					} else {
 
 						var left = Number($(this).css('left').replace('px',''));
-						this.translated = (width - offset + left) % width - left - 800;
-						$(this).css('-webkit-transform', 'translateX(' + this.translated + 'px)');
+						this.translated = (left + this.translated - distMoved) % width - left;
+						$(this).css('-webkit-transform', 'translateX(' + (this.translated + width - 800) + 'px)');
 
 					}
 				});
 
+				self.lastAnimationCycle = time;
 				requestAnimationFrame(_this.animate.bind(this));
 			}
 
 			this.toggleStreamSpeed = function(e, data) {
-				if (this.cycleLength == this.slowSpeed) {
-					this.cycleLength = this.fastSpeed;
+				if (this.animateFast) {
+					this.animateFast = false;
 				} else {
-					this.cycleLength = this.slowSpeed;
+					this.animateFast = true;
 				}
 			}
 
