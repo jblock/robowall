@@ -34,7 +34,7 @@ define(
 					}
 				});
 
-				this.trigger(document, 'nextRoutine');
+				this.trigger(document, 'nextRoutine');				
 			}
 
 			this.toggleSpeed = function(e, data) {
@@ -67,7 +67,6 @@ define(
 
 				// Swap routines in 3 minutes
 				$('.featuredTileContainer').hide();
-				$('.tileContainer').removeClass('featuredTileFocus');
 				setTimeout("$(document).trigger('nextRoutine')", 180000);
 			}
 
@@ -85,6 +84,21 @@ define(
 
 				/* Comment me out for debugging */
 				setupVision();
+
+				window.scroller1 = new FTScroller(document.getElementById('scroller1'), {
+					scrollingX: false,
+					bouncing: false
+				});
+
+				window.scroller2 = new FTScroller(document.getElementById('scroller2'), {
+					scrollingX: false,
+					bouncing: false
+				});
+
+				window.scroller3 = new FTScroller(document.getElementById('scroller3'), {
+					scrollingX: false,
+					bouncing: false
+				});
 			});
 
 			this.worker = new Worker("/app/js/workers/sync.js");

@@ -138,6 +138,7 @@ define(
 
 				// First screen
 				if (e.clientX <= 1080) {
+
 					$(this.$node.parent().parent().children().filter('.featuredTileContainer')[0]).find('.description h1')[0].innerHTML = requestedArticle.title;
 					$(this.$node.parent().parent().children().filter('.featuredTileContainer')[0]).find('.description p')[0].innerHTML = requestedArticle.content;
 					
@@ -152,12 +153,13 @@ define(
 
 					this.$node.addClass('featuredTileFocus');
 					this.trigger($(this.$node.parent().parent().children().filter('.featuredTileContainer')[0]), 'showFeaturedTile');
-
-					// Make description scrollable
-					var scroll = new IScroll('#scroller1');
 				
+					// Reset content slider
+					window.scroller1.scrollTo(0,0);
+
 				// Second screen
 				} else if (e.clientX <= 2160) {
+
 					$(this.$node.parent().parent().children().filter('.featuredTileContainer')[1]).find('.description h1')[0].innerHTML = requestedArticle.title;
 					$(this.$node.parent().parent().children().filter('.featuredTileContainer')[1]).find('.description p')[0].innerHTML = requestedArticle.content;
 					
@@ -173,11 +175,12 @@ define(
 					this.$node.addClass('featuredTileFocus');
 					this.trigger($(this.$node.parent().parent().children().filter('.featuredTileContainer')[1]), 'showFeaturedTile');
 
-					// Make description scrollable
-					var scroll = new IScroll('#scroller2');
+					// Reset content slider
+					window.scroller2.scrollTo(0,0);
 
 				// Third screen
 				} else {
+
 					$(this.$node.parent().parent().children().filter('.featuredTileContainer')[2]).find('.description h1')[0].innerHTML = requestedArticle.title;
 					$(this.$node.parent().parent().children().filter('.featuredTileContainer')[2]).find('.description p')[0].innerHTML = requestedArticle.content;
 					
@@ -192,9 +195,10 @@ define(
 
 					this.$node.addClass('featuredTileFocus');
 					this.trigger($(this.$node.parent().parent().children().filter('.featuredTileContainer')[2]), 'showFeaturedTile');
+					
+					// Reset content slider
+					window.scroller3.scrollTo(0,0);
 
-					// Make description scrollable
-					var scroll = new IScroll('#scroller3');
 				}
 			}
 
@@ -203,10 +207,6 @@ define(
 				$.ajax({
 				  url: "http://robowall.hcii.cs.cmu.edu/increment-popularity.php?id=" + articleID
 				});
-			}
-
-			this.tileGroupFocus = function(e, data) {
-				this.$node.removeClass('featuredTileFocus');
 			}
 
 			this.animate = function(time) {
@@ -270,6 +270,7 @@ define(
 				if (this.animateFast) {
 					this.animateFast = false;
 				} else {
+					$('.featuredTileContainer').trigger('hideFeaturedTile');
 					this.animateFast = true;
 				}
 			}
@@ -292,7 +293,6 @@ define(
 				this.on('buildIn', this.buildIn);
 				this.on('buildOut', this.buildOut);
 				this.on('renderTiles', this.renderAll);
-				this.on('hideFeaturedTile', this.tileGroupFocus);
 				this.articles = [];
 				this.layout = null;
 			});

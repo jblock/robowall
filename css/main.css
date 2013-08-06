@@ -132,8 +132,21 @@ div {
     height: 1920px;
     top: 0px;
     left: 0px;
-    background: rgba(0, 0, 0, 0.65);
+    background: rgba(0, 0, 0, 0.75);
     display: none;
+}
+
+.featuredTileContainer .closeBtn {
+    width: 150px;
+    height: 150px;
+    position: absolute;
+    right: 10px;
+    top: -10px;
+    background-image: url(../app/img/closeBtn.png);
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: 130px;
+    z-index: 10000;
 }
 
 .featuredTileContainer.second {
@@ -149,7 +162,7 @@ div {
     height: 1400px;
     margin: 238px auto 0px auto;
     padding-top: 70px;
-    -webkit-animation-duration: .5s;
+    -webkit-animation-duration: 1s;
 }
 
 .featuredTile .mediaContainer {
@@ -174,21 +187,21 @@ div {
 .featuredTile .description {
     box-sizing: border-box;
     width: 100%;
-    height: auto;
-    max-height: 500px;
+    height: 500px;
     margin-top: 82px;
-    padding: 20px 60px 20px 60px;
+    /*padding: 20px 60px 60px 60px;*/
     background: #000;
     color: #fff;
     border-top: 1px solid rgba(255, 255, 255, .2);
     border-bottom: 1px solid rgba(255, 255, 255, .2);
-    overflow-y: scroll;
+    overflow: hidden;
     -webkit-touch-callout: none;
     -webkit-user-select: none;
 }
 
 .scroller {
     -webkit-tap-highlight-color: rgba(0,0,0,0);
+    margin: 20px 60px 60px 60px;
 }
 
 .featuredTile .description h1 {
