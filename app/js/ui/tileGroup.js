@@ -278,11 +278,13 @@ define(
 			this.buildOut = function(e, data) {
 				// Build out transition
 				this.$node.addClass('hidden');
+				$("#name").addClass("hidden");
 			}
 
 			this.buildIn = function(e, data) {
 				// Build in transition
 				setTimeout('$(".stream").removeClass("hidden"); ', 3000);
+				setTimeout('$("#name").removeClass("hidden"); ', 3000);
 			}
 
 			this.after('initialize', function() {

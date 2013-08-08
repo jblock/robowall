@@ -48,7 +48,7 @@ require(
   	'components/flight/lib/logger',
 		'components/flight/tools/debug/debug'
 	], function(App, compose, registry, advice, withLogging, debug) {
-		debug.enable(true);
+		debug.enable(false);
 		compose.mixin(registry, [advice.withAdvice, withLogging]);
 		DEBUG.events.logAll();
 		$(document).ready(function() {

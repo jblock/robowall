@@ -62,7 +62,22 @@ div {
     -webkit-transform: rotateZ(360deg);
 }
 
-.hidden {
+#name {
+    position: absolute;
+    width: 1080px;
+    height: 165px;
+    margin-top: 65px;
+    left: 1080px;
+    color: #FFF;
+    text-align: center;
+    font-size: 62pt;
+    font-weight: 200;
+    -webkit-transition: all ease-in-out;
+    -webkit-transition-duration: 1s;
+    opacity: 1;
+}
+
+.hidden, #name.hidden {
     opacity: 0;
 }
 
@@ -210,17 +225,6 @@ div {
 
 .featuredTile .description p {
     font-size: 18pt;
-    font-weight: 200;
-}
-
-#name {
-    position: absolute;
-    width: 100%;
-    height: 165px;
-    margin-top: 96px;
-    color: #FFF;
-    text-align: center;
-    font-size: 78pt;
     font-weight: 200;
 }
 
