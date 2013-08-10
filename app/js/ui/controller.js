@@ -12,10 +12,21 @@ define(
 		function controller() {
 
 			this.routines = [];
+			this.routineNames = [];
 			this.currentRoutine = null;
 
 			this.updateData = function(e, data) {
 				var self = this;
+				var firstLoad = false;
+
+				if (self.routines.length == 0) {
+					firstLoad = true;
+				}
+
+				// Reset routines
+				self.routines = [];
+				self.routineNames = [];
+
 				var allArticles = _.sortBy(data.articles, "popularity").reverse();
 
 				// Sort articles by routine
@@ -24,11 +35,23 @@ define(
 						var routineArticles = _.filter(allArticles, function(article) { 
 							return (_.contains(article.routines, routine.id) == true);
 						});
-						self.routines.push(routineArticles);
+						if (routineArticles.length >= 15) {
+							self.routines.push(routineArticles);
+						}
+						self.routineNames.push(routine.name);
 					}
 				});
 
-				this.trigger(document, 'nextRoutine');
+				if (firstLoad) {
+					this.trigger(document, 'nextRoutine');
+				}
+
+				// Fetch data again in an hour
+				setTimeout(function(){self.worker.postMessage("sync")}, 3600000);		
+			}
+
+			this.toggleSpeed = function(e, data) {
+				this.trigger($('#screen .tileContainer .stream'), 'toggleStreamSpeed');
 			}
 
 			this.nextRoutine = function(e, data) {
@@ -40,38 +63,59 @@ define(
 				}
 
 				// Trigger transition out
-				this.trigger($('#screen1 .tileContainer'), 'buildOut');
-				this.trigger($('#screen2 .tileContainer'), 'buildOut');
-				this.trigger($('#screen3 .tileContainer'), 'buildOut');
+				this.trigger($('#screen .tileContainer .stream'), 'buildOut');
 
 				// Draw tiles
 				setTimeout(function() {
-					self.trigger($('#screen1 .tileContainer'), 'renderTiles', { articles: self.routines[self.currentRoutine].slice(0,9) });
-					self.trigger($('#screen2 .tileContainer'), 'renderTiles', { articles: self.routines[self.currentRoutine].slice(9,18) });
-					self.trigger($('#screen3 .tileContainer'), 'renderTiles', { articles: self.routines[self.currentRoutine].slice(18,27) });
+					// Change title
+					$('#name').html(self.routineNames[self.currentRoutine]);
+
+					var halfLength = Math.ceil(self.routines[self.currentRoutine].length / 2); 
+					var leftSide = self.routines[self.currentRoutine].slice(0, halfLength);   
+					var rightSide = self.routines[self.currentRoutine].slice(halfLength,self.routines[self.currentRoutine].length);
+
+					self.trigger($('#screen .tileContainer .topStream'), 'renderTiles', { articles: leftSide });
+					self.trigger($('#screen .tileContainer .botStream'), 'renderTiles', { articles: rightSide });
 				}, 1000);
 
 				// Trigger transition in
-				this.trigger($('#screen1 .tileContainer'), 'buildIn');
-				this.trigger($('#screen2 .tileContainer'), 'buildIn');
-				this.trigger($('#screen3 .tileContainer'), 'buildIn');
+				this.trigger($('#screen .tileContainer .stream'), 'buildIn');
 
-				// Swap routines in 3 minutes
+				// Swap routines in 5 minutes
 				$('.featuredTileContainer').hide();
-				$('.tileContainer').removeClass('featuredTileFocus');
-				setTimeout("$(document).trigger('nextRoutine')", 180000);
+				setTimeout("$(document).trigger('nextRoutine')", 300000);
 			}
 
 			this.after('initialize', function() {
 				var self = this;
 				this.on(document, 'dataFetched', this.updateData);
 				this.on(document, 'nextRoutine', this.nextRoutine);
+				this.on(document, 'toggleSpeed', this.toggleSpeed);
 
 				this.worker.addEventListener('message', function(event) {
 					self.trigger(document, 'dataFetched', event.data);
 				});
 
-				this.worker.postMessage("sync");
+				// Fetch data
+				self.worker.postMessage("sync");
+
+				setupVision();
+
+				// Setup featured article content sliders
+				window.scroller1 = new FTScroller(document.getElementById('scroller1'), {
+					scrollingX: false,
+					bouncing: false
+				});
+
+				window.scroller2 = new FTScroller(document.getElementById('scroller2'), {
+					scrollingX: false,
+					bouncing: false
+				});
+
+				window.scroller3 = new FTScroller(document.getElementById('scroller3'), {
+					scrollingX: false,
+					bouncing: false
+				});
 			});
 
 			this.worker = new Worker("/app/js/workers/sync.js");

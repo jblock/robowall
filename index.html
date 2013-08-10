@@ -7,34 +7,65 @@
 	<link href='http://fonts.googleapis.com/css?family=Titillium+Web:400,200' rel='stylesheet' type='text/css'>
 </head>
 <body>
-	<div id="screen1">
+
+	<!-- Magic Vision Stuff -->
+	<div id="visionContainer">
+		<video id="webcam" autoplay width="640" height="480"></video>
+	    <canvas id="canvas-source" width="640" height="480"></canvas>
+	    <canvas id="canvas-highlights" width="640" height="480"></canvas>
+	    <canvas id="canvas-blended" width="640" height="480"></canvas>
+	    <div id="hotSpots">
+	        <div id="fullScreen"></div>
+	    </div>
+	</div>
+    <!-- End Magic -->
+	
+	<div id="screen">
+		<div id="name"></div>
 		<div class="threeContainer"></div>
-		<div class="tileContainer"></div>
-		<div class="featuredTileContainer animated fadeIn">
-			<div class="featuredTile animated fadeInDownBig">
+		<div class="tileContainer">
+			<div class="topStream stream"></div>
+			<div class="botStream stream"></div>
+		</div>
+		<div class="featuredTileContainer animated fadeIn first">
+			<div class="featuredTile animated bounceIn">
+				<div class="closeBtn"></div>
 				<div class="mediaContainer">
 					<div class="media"></div>
 				</div>
-				<div class="description">
-					<h1></h1>
-					<p></p>
+				<div class="description" id="scroller1">
+					<div class="scroller">
+						<h1></h1>
+						<p></p>
+					</div>
 				</div>
 			</div>
 		</div>
-	</div>
-	
-	<div id="screen2">
-		<div id="name"></div>
-		<div class="threeContainer"></div>
-		<div class="tileContainer"></div>
-		<div class="featuredTileContainer animated fadeIn">
-			<div class="featuredTile animated fadeInDownBig">
+		<div class="featuredTileContainer animated fadeIn second">
+			<div class="featuredTile animated bounceIn">
+				<div class="closeBtn"></div>
 				<div class="mediaContainer">
 					<div class="media"></div>
 				</div>
-				<div class="description">
-					<h1></h1>
-					<p></p>
+				<div class="description" id="scroller2">
+					<div class="scroller">
+						<h1></h1>
+						<p></p>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="featuredTileContainer animated fadeIn third">
+			<div class="featuredTile animated bounceIn">
+				<div class="closeBtn"></div>
+				<div class="mediaContainer">
+					<div class="media"></div>
+				</div>
+				<div class="description" id="scroller3">
+					<div class="scroller">
+						<h1></h1>
+						<p></p>
+					</div>
 				</div>
 			</div>
 		</div>
@@ -43,24 +74,10 @@
 			<div class="RI"></div>
 		</div>
 	</div>
-
-	<div id="screen3">
-		<div class="threeContainer"></div>
-		<div class="tileContainer"></div>
-		<div class="featuredTileContainer animated fadeIn">
-			<div class="featuredTile animated fadeInDownBig">
-				<div class="mediaContainer">
-					<div class="media"></div>
-				</div>
-				<div class="description">
-					<h1></h1>
-					<p></p>
-				</div>
-			</div>
-		</div>
-	</div>
 	
 	<script src="app/js/packery.js"></script>
 	<script data-main="app/js/main" src="components/requirejs/require.js"></script>
+	<script src="app/js/vision.js"></script>
+	<script src="app/js/ftscroller.js"></script>
 </body>
 </html>

@@ -14,8 +14,18 @@ define(
 			this.renderer;
 			this.camera;
 			this.scene;
+			this.cube;
 
-			this.particles = [];
+			this.renderModel;
+			this.effectBloom;
+			// this.effectCopy; // For Shaders
+
+			this.composer;
+
+			this.cubes = [];
+			this.lights = {};
+
+			this.state;
 
 			this.particleRender = function(context) {
 				context.beginPath();
@@ -24,11 +34,12 @@ define(
 			}
 
 			this.init = function() {
-				this.renderer = new THREE.WebGLRenderer({antialias: true, alpha: false});
-				this.renderer.setSize($('#page').width(), $('#page').height());
+				console.log("STARTING INIT");
+				this.renderer = new THREE.WebGLRenderer({antialias: true, alpha: true});
+				this.renderer.setSize(this.$node.width(), this.$node.height());
 				this.node.appendChild(this.renderer.domElement);
 
-				this.camera = new THREE.PerspectiveCamera(40, 9 / 16, 1, 1000);
+				this.camera = new THREE.PerspectiveCamera(45, 9 / 16, 1, 10000);
 				this.camera.position.x = 0;
 				this.camera.position.y = 0,
 				this.camera.position.z = 1000;
@@ -36,51 +47,161 @@ define(
 
 				this.scene = new THREE.Scene();
 
-				var particle, material;
-				for (var i = 0; i < 200; i++) {
-					material = new THREE.ParticleCanvasMaterial( {color: 0xFFFFFF, program: this.particleRender} );
-					particle = new THREE.Particle(material);
+				// COLORS!!
+				var colors = [0xEEEEEE, 0x572A3C, 0x8C3542, 0xD14038, 0xA2EBD8];
+				
+				var leftMid = new THREE.PointLight( colors[0], 3, 1000 );
+				leftMid.position.set(-300, -550, 0);
+				var rightMid = new THREE.PointLight( colors[1], 3, 1000 );
+				rightMid.position.set(300, 550, 0);
+				var bottomAmbient = new THREE.PointLight( colors[2], 3, 2000 );
+				bottomAmbient.position.set(0, 600, 5);
 
-					particle.position.y = Math.random() * 1000 - 500;
-					particle.position.x = Math.random() * 1000 - 500;
-					particle.position.z = 0;
+				this.scene.add(leftMid);
+				this.scene.add(rightMid);
+				this.scene.add(bottomAmbient);
 
-					particle.scale.x = particle.scale.y = 10;
+				this.lights.leftMid = leftMid;
+				this.lights.rightMid = rightMid;
+				this.lights.bottomAmbient = bottomAmbient;
 
-					this.scene.add(particle);
-					this.particles.push(particle);
+				window.lights = this.lights;
+		
+				var ambientLight = new THREE.AmbientLight( 0x444444 );
+				this.scene.add( ambientLight );
+
+				var numRows = 60; //100
+				var numCols = 50; //60
+
+				var cubeSize = 20/1.41421356237;
+				var geometry = new THREE.PlaneGeometry( cubeSize*.95, cubeSize*.95, 5, 5)
+				var material = new THREE.MeshPhongMaterial( {
+								color: 0x555555, 
+								ambient: 0x555555,
+								specular: 0xffffff, 
+								shininess: 10, 
+								shading: THREE.SmoothShading
+								} )
+				for (var i = 0; i < numRows; i++) {
+					for (var j = 0; j < numCols; j++) {
+						var cube = {};
+						var plane = new THREE.Mesh(
+							geometry, material
+							);
+						plane.position.x = -cubeSize*numCols/2 + cubeSize/2*0 + j * cubeSize;
+						plane.position.y = -cubeSize*numRows/2 + cubeSize/2*0 + i * cubeSize;
+						plane.rotation.x = (0.5 - i / numRows) * -Math.PI/4;
+
+						this.scene.add(plane);
+
+						var bound = Math.PI/3;
+
+						// plane.rotation.y = -bound;
+
+						var start = { _ref: plane, theta: -bound };
+						var startShift = { _ref: plane, z: 0 };
+						var target = { backwardRef: plane, theta: bound };
+
+						if (Math.random() > 0.823) {
+							cube.forwardTween = 
+								new TWEEN.Tween(start)
+								.to({theta: bound}, Math.random()*4000+1000)
+								.delay(Math.random()*4000)
+								.easing(TWEEN.Easing.Exponential.Out)
+								.onUpdate(function() {
+									// console.log('forward');
+									this._ref.rotation.y = this.theta;
+								});
+								// .start();
+
+							cube.backwardTween = 
+								new TWEEN.Tween(start)
+								.to({theta: -bound}, Math.random()*4000+1000)
+								// .delay(Math.random()*500)
+								.easing(TWEEN.Easing.Exponential.Out)
+								.onUpdate(function() {
+									// console.log("back");
+									this._ref.rotation.y = this.theta;
+								});
+
+							// var shiftTween = 
+							// 	new TWEEN.Tween(startShift)
+							// 	.to({z: Math.PI/4}, 2000)
+							// 	.delay((Math.floor(i/perLine))*400)
+							// 	.easing(TWEEN.Easing.Exponential.Out)
+							// 	.onUpdate(function() {
+							// 		this._ref.rotation.x = this.z;
+							// 	})
+							// 	.start();
+
+							// var backShiftTween = 
+							// 	new TWEEN.Tween(startShift)
+							// 	.to({z: -Math.PI/4}, Math.random()*4000+100)
+							// 	.easing(TWEEN.Easing.Exponential.Out)
+							// 	.onUpdate(function() {
+							// 		this._ref.rotation.x = this.z;
+							// 	});
+
+							cube.forwardTween.chain(cube.backwardTween);
+							cube.backwardTween.chain(cube.forwardTween);
+							// shiftTween.chain(backShiftTween);
+							// backShiftTween.chain(shiftTween);
+							// forwardTween.start();
+						}
+
+						cube.geometry = plane;
+						this.cubes.push(cube);
+					}
 				}
 
-				// this.scene.add(mesh);
+				this.state = 0;
+				console.log("FINISHED INIT");
+
 			}
 
-			var self = this;
+			this.startMotion = function() {
+				for (var i = 0; i < this.cubes.length; i++) {
+					if (this.cubes[i].forwardTween) {
+						this.cubes[i].forwardTween.start();
+					}
+				}
+			}
+
+			this.disableMovingStuff = function() {
+				this.state = 1;
+			}
+
+			this.enableMovingStuff = function() {
+				this.state = 0;
+			}
 
 			this.loop = function() {
-				var animate = function() {
-					requestAnimationFrame(animate);
-					console
-					render();
-				}
+				var self = this;
+				
 				var render = function() {
+					self.renderer.clear();
 					self.renderer.render(self.scene, self.camera);
 				}
-			}
-
-			this.animate = function() {
-				var self = this;
-				// console.log(arguments.callee);
-				requestAnimationFrame(ref.animate);
-				ref.render();
-			}
-
-			this.render = function() {
-				this.renderer.render(this.scene, this.camera);
+				
+				var animate = function(time) {
+					requestAnimationFrame(animate, self.renderer.domElement);
+					if (self.state !== 1) TWEEN.update();
+					render();
+				}
+				
+				animate(new Date().getTime());
 			}
 
 			this.after('initialize', function() {
-				this.loop();
+
+				this.on('showFeaturedTile', this.disableMovingStuff);
+				this.on('hideFeaturedTile', this.enableMovingStuff);
+
+				this.init();
 				console.log("THREE JS INITIALIZED");
+				this.startMotion();
+				this.loop();
+				console.log("THREE JS ANIMATING");
 			});
 		}
 	}

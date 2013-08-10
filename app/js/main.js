@@ -10,8 +10,8 @@ require.config({
 		sylvester: 'components/sylvester/sylvester',
 		underscore: 'components/underscore/underscore',
 		THREE: 'components/threejs/build/three',
-		TWEEN: 'components/tweenjs/build/tween.min',
-		'jquery-iosslider': 'components/iosslider/_src/jquery.iosslider.min'
+		TWEEN: 'components/tweenjs/src/tween',
+		'jquery-iosslider': 'components/iosslider/_src/jquery.iosslider'
 	},
 	map: {
 		'*': {
@@ -26,13 +26,15 @@ require.config({
 			deps: ['components/flight/lib/index']
 		},
 		THREE: {
+			// deps: ['components/threejs/examples/js/postprocessing/BloomPass', 'components/threejs/examples/js/postprocessing/EffectComposer', 'components/threejs/examples/js/postprocessing/RenderPass'],
 			exports: 'THREE'
 		},
 		TWEEN: {
 			exports: 'TWEEN'
 		},
 		'jquery-iosslider': {
-			deps: ['jquery']
+			deps: ['jquery'],
+			exports: 'jQuery.fn.iosSlider'
 		}
 	}
 });
@@ -41,12 +43,12 @@ require(
 	[
 		'app/js/app', 
 		'components/flight/lib/compose',
-	  	'components/flight/lib/registry',
-	  	'components/flight/lib/advice',
-	  	'components/flight/lib/logger',
+  	'components/flight/lib/registry',
+  	'components/flight/lib/advice',
+  	'components/flight/lib/logger',
 		'components/flight/tools/debug/debug'
 	], function(App, compose, registry, advice, withLogging, debug) {
-		debug.enable(true);
+		debug.enable(false);
 		compose.mixin(registry, [advice.withAdvice, withLogging]);
 		DEBUG.events.logAll();
 		$(document).ready(function() {
