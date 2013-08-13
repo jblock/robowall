@@ -16,7 +16,6 @@ define(
 
 				setTimeout(function() {
 					self.$node.show();
-					self.createSlider();
 				}, 100);
 			}
 
@@ -37,15 +36,6 @@ define(
 				}, 500);
 
 				this.trigger(this.$node.siblings('.tileContainer')[0], 'hideFeaturedTile');
-			}
-
-			this.createSlider = function(e, data) {
-				var self = this;
-				this.$node.find('.mediaContainer').iosSlider('destroy');
-				this.$node.find('.mediaContainer').iosSlider({
-					desktopClickDrag: true,
-					snapSlideCenter: true
-				});
 			}
 
 			this.after('initialize', function() {

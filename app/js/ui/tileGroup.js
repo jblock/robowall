@@ -147,8 +147,12 @@ define(
 					$(slider).html('');
 
 					// Add media
-					requestedArticle.media.forEach(function(imageSrc) {
-						$(slider).append('<img class="slide" src="' + imageSrc + '">');
+					requestedArticle.media.forEach(function(image) {
+						if (image[1] != "") {
+							$(slider).append('<div class="slide"><img src="' + image[0] + '"><p>' + image[1] + '</p></div>');
+						} else {
+							$(slider).append('<div class="slide"><img src="' + image[0] + '"></div>');
+						}
 					});
 
 					this.$node.addClass('featuredTileFocus');
@@ -156,6 +160,7 @@ define(
 				
 					// Reset content slider
 					window.scroller1.scrollTo(0,0);
+					window.mediaScroller1.scrollTo(0,0);
 
 				// Second screen
 				} else if (e.clientX <= 2160) {
@@ -168,8 +173,12 @@ define(
 					$(slider).html('');
 
 					// Add media
-					requestedArticle.media.forEach(function(imageSrc) {
-						$(slider).append('<img class="slide" src="' + imageSrc + '">');
+					requestedArticle.media.forEach(function(image) {
+						if (image[1] != "") {
+							$(slider).append('<div class="slide"><img src="' + image[0] + '"><p>' + image[1] + '</p></div>');
+						} else {
+							$(slider).append('<div class="slide"><img src="' + image[0] + '"></div>');
+						}
 					});
 
 					this.$node.addClass('featuredTileFocus');
@@ -177,6 +186,7 @@ define(
 
 					// Reset content slider
 					window.scroller2.scrollTo(0,0);
+					window.mediaScroller2.scrollTo(0,0);
 
 				// Third screen
 				} else {
@@ -189,8 +199,12 @@ define(
 					$(slider).html('');
 
 					// Add media
-					requestedArticle.media.forEach(function(imageSrc) {
-						$(slider).append('<img class="slide" src="' + imageSrc + '">');
+					requestedArticle.media.forEach(function(image) {
+						if (image[1] != "") {
+							$(slider).append('<div class="slide"><img src="' + image[0] + '"><p>' + image[1] + '</p></div>');
+						} else {
+							$(slider).append('<div class="slide"><img src="' + image[0] + '"></div>');
+						}
 					});
 
 					this.$node.addClass('featuredTileFocus');
@@ -198,6 +212,7 @@ define(
 					
 					// Reset content slider
 					window.scroller3.scrollTo(0,0);
+					window.mediaScroller3.scrollTo(0,0);
 
 				}
 			}

@@ -116,6 +116,28 @@ define(
 					scrollingX: false,
 					bouncing: false
 				});
+
+				// Setup featured article media scrollers
+				window.mediaScroller1 = new FTScroller(document.getElementById('mediaContainer1'), {
+					scrollingY: false,
+					snapping: true,
+					paginatedSnap: true,
+					scrollbars: false
+				});
+
+				window.mediaScroller2 = new FTScroller(document.getElementById('mediaContainer2'), {
+					scrollingY: false,
+					snapping: true,
+					paginatedSnap: true,
+					scrollbars: false
+				});
+
+				window.mediaScroller3 = new FTScroller(document.getElementById('mediaContainer3'), {
+					scrollingY: false,
+					snapping: true,
+					paginatedSnap: true,
+					scrollbars: false
+				});
 			});
 
 			this.worker = new Worker("/app/js/workers/sync.js");
